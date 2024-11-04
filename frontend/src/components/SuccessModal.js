@@ -1,4 +1,4 @@
-// src/components/SuccessModal.js
+//src/components/SuccessModal.js
 
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
