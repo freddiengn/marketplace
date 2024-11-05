@@ -29,9 +29,9 @@ public class UserDataSeeder {
                 // Create an employee user
                 User user = new User();
                 user.setUserId(GenerateUtils.generateUUID());
-                user.setUserName("nguyenvana");
-                user.setEmail("nguyenvana@gmail.com");
-                user.setHashPassword(passwordEncoder.encode("Abc12356@!")); 
+                user.setUserName("tun36777");
+                user.setEmail("tun36777@temple.com");
+                user.setHashPassword(passwordEncoder.encode("123456")); 
                 user.setIsActive(true);
                 user.setCreatedAt(new Date());
                 user.setUpdatedAt(new Date());
