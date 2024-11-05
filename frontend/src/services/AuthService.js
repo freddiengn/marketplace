@@ -2,13 +2,14 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/auth'; // Update with your backend URL
 
-export const loginUser = async (email, password) => {
-    const response = await axios.post(`${API_URL}/login`, { email, password });
+// Function to handle Google login token
+export const handleGoogleLogin = async (credential) => {
+    const response = await axios.post(`${API_URL}/google`, { credential });
     return response.data;
 };
 
-export const signupUser = async (userName, email, password) => {
-    const response = await axios.post(`${API_URL}/signup`, { userName, email, password });
+export const signupUser = async (credential,userName) => {
+    const response = await axios.post(`${API_URL}/signup`, { credential, userName });
     return response.data;
 };
 

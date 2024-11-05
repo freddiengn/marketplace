@@ -8,11 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RegisterUserDto {
     private String userName;
-    private String email;
-    private String password;
-
-    public RegisterUserDto setUserName(String userName) {
-        this.userName = userName;
-        return this;
-    }
+    private String credential;
 }

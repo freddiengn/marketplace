@@ -1,75 +1,79 @@
 // src/pages/Login.js
 
-import React, { useState } from 'react';
-import { loginUser } from '../services/AuthService';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
+import { handleGoogleLogin } from '../services/AuthService'; // Import the auth service
 import SuccessModal from '../components/SuccessModal';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const location = useLocation();
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [message, setMessage] = useState('');
-    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        
-        try {
-            const data = await loginUser(email, password);
-            // Handle successful login
-            console.log(data);
+    useEffect(() => {
+        // Check if there's an error in the URL
+        const query = new URLSearchParams(location.search);
+        if (query.get('error')) {
+            setError('Login failed. Please try again.');
+        } else if (query.get('success')) {
             setMessage('Login successful! Redirecting to home...');
             setShowModal(true);
-            setTimeout(() => setShowModal(false), 2000); // Redirect after 2 seconds
-        } catch (err) {
-            setError('Invalid email or password');
+            setTimeout(() => {
+                setShowModal(false);
+                navigate('/home');
+            }, 2000);
+        }
+    }, [location, navigate]);
+
+    // Handle Google login success
+    const handleGoogleSuccess = async (credentialResponse) => {
+        const { credential } = credentialResponse; // Extract credential from the response
+        try {           
+            const response = await handleGoogleLogin(credential); // Use the auth service to handle login
+            if (response.email) {
+                // Handle successful login
+                setMessage('Login successful! Redirecting to home...');
+                setShowModal(true);
+                setTimeout(() => {
+                    navigate('/home');
+                }, 2000);
+            } else {
+                setError('Login failed. Please try again.'); // Handle server-side error
+            }
+        } catch (error) {
+            setError(error.message || 'Login failed. Please try again.');
         }
     };
 
+    const handleGoogleFailure = (error) => {
+        console.error('Google login failed: ', error);
+        setError('Google login failed. Please try again.');
+    };
+
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-            <h2 className="text-2xl font-bold mb-5 text-center">Login</h2>
-            {error && <div className="bg-red-100 text-red-700 p-3 mb-5 rounded">{error}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email address</label>
-                    <input 
-                        type="email" 
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                        id="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
-                    <input 
-                        type="password" 
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                        id="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <button 
-                    type="submit" 
-                    className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
-                >
-                    Login
-                </button>
+        <GoogleOAuthProvider clientId="591480352874-umkc4sq466ojjtn3hfubqgtnthkso4a4.apps.googleusercontent.com">
+        <div className="min-h-screen max-w-md mx-auto mt-10 p-6 bg-white rounded-lg">
+            <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+                <h2 className="text-2xl font-bold mb-5 text-center">Login</h2>
+                {error && <div className="bg-red-100 text-red-700 p-3 mb-5 rounded">{error}</div>}
+                
+                {/* Google Login button */}
+                <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleFailure}
+                    type='icon' // This can help display it like an icon button
+                />
+                
                 <p className="mt-4 text-center text-gray-600">
                     Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
                 </p>
-            </form>
-
-            <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
+                <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
+            </div>
         </div>
+        </GoogleOAuthProvider>
     );
 };
 
