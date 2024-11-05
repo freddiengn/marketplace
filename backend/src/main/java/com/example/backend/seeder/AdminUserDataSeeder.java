@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.example.backend.entity.AdminUser;
+import com.example.backend.entity.User;
 import com.example.backend.repository.AdminUserRepository;
 import com.example.backend.util.GenerateUtils;
 
@@ -28,7 +28,7 @@ public class AdminUserDataSeeder {
 
 
                 // Create an admin user
-                AdminUser adminUser = new AdminUser();
+                User adminUser = new User();
                 adminUser.setUserId(GenerateUtils.generateUUID());
                 adminUser.setFullName("Vinh Nguyen");
                 adminUser.setEmail("tun36777@temple.edu");
@@ -39,7 +39,7 @@ public class AdminUserDataSeeder {
 
 
                 // Create an employee user
-                AdminUser employeeUser = new AdminUser();
+                User employeeUser = new User();
                 employeeUser.setUserId(GenerateUtils.generateUUID());
                 employeeUser.setFullName("Meiyun");
                 employeeUser.setEmail("meiyun@temple.edu");

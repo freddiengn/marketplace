@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.LoginUserDto;
 import com.example.backend.dto.RegisterUserDto;
-import com.example.backend.entity.AdminUser;
+import com.example.backend.entity.User;
 import com.example.backend.response.LoginResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.JwtService;
@@ -32,7 +32,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
         // Authenticate the user
-        AdminUser authenticatedUser = authenticationService.authenticate(loginUserDto);
+        User authenticatedUser = authenticationService.authenticate(loginUserDto);
     
         // Get roles as a list of strings
         List<String> roleIds = authenticatedUser.getAuthorities().stream()
@@ -51,8 +51,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
     @PostMapping("/signup")
-    public ResponseEntity<AdminUser> register(@RequestBody RegisterUserDto registerUserDto) {
-        AdminUser registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+        User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
