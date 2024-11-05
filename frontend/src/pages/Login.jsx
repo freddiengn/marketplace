@@ -1,9 +1,8 @@
 // src/pages/Login.js
 
 import React, { useState } from 'react';
-import { loginUser } from '../services/api';
+import { loginUser } from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import SuccessModal from '../components/SuccessModal';
 
@@ -32,35 +31,40 @@ const Login = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2>Login</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+            <h2 className="text-2xl font-bold mb-5 text-center">Login</h2>
+            {error && <div className="bg-red-100 text-red-700 p-3 mb-5 rounded">{error}</div>}
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email address</label>
+                <div className="mb-4">
+                    <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email address</label>
                     <input 
                         type="email" 
-                        className="form-control" 
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         id="email" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
                     />
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password</label>
+                <div className="mb-4">
+                    <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
                     <input 
                         type="password" 
-                        className="form-control" 
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         id="password" 
                         value={password} 
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
-                <p className="mt-3">
-                    Don't have an account? <Link to="/signup">Sign Up</Link>
+                <button 
+                    type="submit" 
+                    className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
+                >
+                    Login
+                </button>
+                <p className="mt-4 text-center text-gray-600">
+                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign Up</Link>
                 </p>
             </form>
 
