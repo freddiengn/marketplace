@@ -7,10 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -29,23 +27,14 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-
-    public List<String> extractRoleList(String token) {
-        return extractClaim(token, claims -> 
-            Arrays.asList(claims.get("roles", String.class).split(",")) // Split comma-separated roles
-        );
-    }
-    
-    
     
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails, List<String> roleIds) {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roleIds", String.join(",", roleIds)); // Convert list of roles to comma-separated string
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
