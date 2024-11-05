@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.example.backend.dto.LoginUserDto;
 import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.dto.UserDto;
-import com.example.backend.entity.AdminUser;
+import com.example.backend.entity.User;
 import com.example.backend.repository.AdminUserRepository;
 import com.example.backend.util.GenerateUtils;
-import com.example.backend.entity.AdminUser;
+import com.example.backend.entity.User;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +33,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-   public AdminUser authenticate(LoginUserDto input) {
+   public User authenticate(LoginUserDto input) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 input.getEmail(),
@@ -41,12 +41,12 @@ public class AuthenticationService {
             )
         );
 
-        AdminUser user = userRepository.findByEmail(input.getEmail());
+        User user = userRepository.findByEmail(input.getEmail());
         return user;
     }
 
-    public AdminUser signup(RegisterUserDto input) {
-        AdminUser user = new AdminUser();
+    public User signup(RegisterUserDto input) {
+        User user = new User();
         user.setUserId(GenerateUtils.generateUUID());
         user.setFullName(input.getFullName());
         user.setEmail(input.getEmail());
@@ -63,7 +63,7 @@ public class AuthenticationService {
                 .collect(Collectors.toList());
     }
 
-    private UserDto convertToUserDto(AdminUser user) {
+    private UserDto convertToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setFullName(user.getFullName());

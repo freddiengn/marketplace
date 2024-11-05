@@ -18,21 +18,21 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "admin_user")
+@Table(name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminUser implements UserDetails {
+public class User implements UserDetails {
 
     @Id
-    @Column(name = "admin_user_id", length = 36)
+    @Column(name = "user_id", length = 36)
     private String userId;
+
+    @Column(name = "user_name", nullable = false, length = 20, unique = true)
+    private String userName;
 
     @Column(name = "email", nullable = false, length = 256, unique = true)
     private String email;
-
-    @Column(name = "full_name", nullable = false, length = 50)
-    private String fullName;
 
     @Column(name = "hash_password", nullable = false, length = 128)
     private String hashPassword;
@@ -51,6 +51,10 @@ public class AdminUser implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     @Override
