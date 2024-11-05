@@ -1,20 +1,19 @@
-//src/components/SuccessModal.js
-
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'antd';
 
 const SuccessModal = ({ show, onHide, message }) => {
     return (
-        <Modal show={show} onHide={onHide}>
-            <Modal.Header closeButton>
-                <Modal.Title>Success</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{message}</Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>
+        <Modal
+            title="Success"
+            visible={show}
+            onCancel={onHide}
+            footer={[
+                <button key="close" onClick={onHide} className="ant-btn ant-btn-default">
                     Close
-                </Button>
-            </Modal.Footer>
+                </button>,
+            ]}
+        >
+            <p>{message}</p>
         </Modal>
     );
 };
