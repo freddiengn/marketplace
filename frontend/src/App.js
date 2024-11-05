@@ -6,11 +6,13 @@ import Signup from './pages/Signup';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+
+
 const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 {/* Add more routes as needed */}

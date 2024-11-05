@@ -1,10 +1,9 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Footer = () => {
     return (
-        <footer className="bg-light text-center text-lg-start mt-auto">
-            <div className="text-center p-3">
+        <footer className="bg-gray-200 text-center py-4 mt-auto">
+            <div className="text-gray-700">
                 © 2024 My React App. All rights reserved.
             </div>
         </footer>
