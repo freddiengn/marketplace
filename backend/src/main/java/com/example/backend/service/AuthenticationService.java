@@ -9,9 +9,9 @@ import com.example.backend.dto.LoginUserDto;
 import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.entity.User;
-import com.example.backend.repository.AdminUserRepository;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.response.UserResponse;
 import com.example.backend.util.GenerateUtils;
-import com.example.backend.entity.User;
 
 import java.util.Date;
 import java.util.List;
@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
-    private final AdminUserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(
-        AdminUserRepository userRepository,
+        UserRepository userRepository,
         AuthenticationManager authenticationManager,
         PasswordEncoder passwordEncoder
     ) {
@@ -45,32 +45,46 @@ public class AuthenticationService {
         return user;
     }
 
-    public User signup(RegisterUserDto input) {
+    public UserResponse signup(RegisterUserDto input) {
+        // Check if a user with the given email already exists
+        if (userRepository.findByUserName(input.getUserName()) != null) {
+            throw new IllegalArgumentException("A user with this userName already exists.");
+        }
+
+        if (userRepository.findByEmail(input.getEmail()) != null) {
+            throw new IllegalArgumentException("A user with this email already exists.");
+        }
+    
+    
+        // Create a new user entity
         User user = new User();
         user.setUserId(GenerateUtils.generateUUID());
-        user.setFullName(input.getFullName());
+        user.setUserName(input.getUserName());
         user.setEmail(input.getEmail());
         user.setHashPassword(passwordEncoder.encode(input.getPassword()));
         user.setIsActive(true);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
-        return userRepository.save(user);
+    
+        // Save user and map to UserResponse
+        User savedUser = userRepository.save(user);
+        return convertToUserResponse(savedUser);
     }
-
-    public List<UserDto> allUsers() {
+    
+    public List<UserResponse> allUsers() {
         return userRepository.findAll().stream()
-                .map(this::convertToUserDto)
+                .map(this::convertToUserResponse)
                 .collect(Collectors.toList());
     }
 
-    private UserDto convertToUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setUserId(user.getUserId());
-        userDto.setFullName(user.getFullName());
-        userDto.setEmail(user.getEmail());
-        userDto.setIsActive(user.getIsActive());
-        userDto.setCreatedAt(user.getCreatedAt());
-        userDto.setUpdatedAt(user.getUpdatedAt());
-        return userDto;
+    private UserResponse convertToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(user.getUserId());
+        userResponse.setUserName(user.getUserName());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setIsActive(user.getIsActive());
+        userResponse.setCreatedAt(user.getCreatedAt());
+        userResponse.setUpdatedAt(user.getUpdatedAt());
+        return userResponse;
     }
 }

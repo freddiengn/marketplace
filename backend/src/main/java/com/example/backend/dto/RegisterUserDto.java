@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterUserDto {
+    private String userName;
     private String email;
     private String password;
-    private String fullName;
 
-    public RegisterUserDto setFullName(String fullName) {
-        this.fullName = fullName;
+    public RegisterUserDto setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
-
-
 }
