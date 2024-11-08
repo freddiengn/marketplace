@@ -1,7 +1,8 @@
 package com.example.backend.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OAuth2Service;
 import com.example.backend.service.UserService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.Map;
 
 @RequestMapping("/auth")
@@ -23,19 +26,21 @@ import java.util.Map;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
-    private final OAuth2Service oAuth2Service;
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+    @Autowired
+    private OAuth2Service oAuth2Service;
 
-    public AuthenticationController(OAuth2Service oAuth2Service, AuthenticationService authenticationService,
+
+    public AuthenticationController(AuthenticationService authenticationService,
             UserService userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
-        this.oAuth2Service = oAuth2Service;
     }
 
-    @PostMapping("/google")
-    public ResponseEntity<UserResponse> handleGoogleLogin(@RequestBody Map<String, String> requestBody) {
+   @PostMapping("/google")
+    public ResponseEntity<UserResponse> handleGoogleLogin(
+            @RequestBody Map<String, String> requestBody,
+            HttpServletResponse response) {
+
         String credential = requestBody.get("credential");
         if (credential == null || credential.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
@@ -45,10 +50,21 @@ public class AuthenticationController {
             // Decode the Google ID token using the service
             Map<String, Object> userInfo = oAuth2Service.decode(credential);
             String email = (String) userInfo.get("email");
-            String name = (String) userInfo.get("name");
 
-            // Delegate user login/registration to the service
+            // Handle user login or registration
             UserResponse userResponse = userService.getUserByEmail(email);
+
+            // Create an HTTP-only cookie with the credential token
+            ResponseCookie cookie = ResponseCookie.from("auth_token", credential)
+                .httpOnly(true)
+                .secure(true) // Use true if your app runs over HTTPS
+                .sameSite("Strict") // CSRF protection
+                .path("/") // Cookie is available across the whole app
+                .maxAge(24 * 60 * 60) // 1 day expiry
+                .build();
+
+            // Add the cookie to the response headers
+            response.addHeader("Set-Cookie", cookie.toString());
 
             return ResponseEntity.ok(userResponse);
         } catch (IllegalArgumentException e) {
