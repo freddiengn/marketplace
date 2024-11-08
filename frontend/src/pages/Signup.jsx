@@ -18,7 +18,6 @@ const Signup = () => {
         e.preventDefault();
         setError('');
 
-        // Check if username already exists
         try {
             const userNameExists = await checkUserNameExists(userName);
             if (userNameExists) {
@@ -26,19 +25,12 @@ const Signup = () => {
                 return;
             }
 
-            // Check if userEmail is valid and matches .edu pattern
-            // const eduEmailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[edu]{2,}$/; // Adjusted pattern for .edu
-            // if (!eduEmailPattern.test(userEmail)) {
-            //     setError('Please provide a valid .edu email address.');
-            //     return;
-            // }
             if (!credential) {
-                setError('Please choose email to continue.');
+                setError('Please choose an email to continue.');
                 return;
             }
-            // Proceed with signup
+
             const data = await signupUser(credential, userName);
-            console.log(data);
             setMessage('Signup successful! Redirecting to login...');
             setShowModal(true);
             setTimeout(() => navigate('/'), 2000);
@@ -51,25 +43,15 @@ const Signup = () => {
         const { credential } = credentialResponse;
         const decoded = jwtDecode(credential);
         const email = decoded.email;
-        // Set user email from Google
         setCredential(credential);
 
-        // Check if email already exists
         const emailExists = await checkEmailExists(email);
         if (emailExists) {
             setError('Email is already in use. Please log in or choose another account.');
-            return; // If email exists, exit early
+            return;
         }
 
-        // Check if user email matches .edu pattern
-        // const eduEmailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[edu]{2,}$/; // Adjusted pattern for .edu
-        // if (!eduEmailPattern.test(email)) {
-        //     setError('Please provide a valid .edu email address.');
-        //     return;
-        // }
-
-        // Inform the user to choose a username and password
-        setMessage(`Welcome, ${decoded.name}. Please complete your registration with a username and password.`);
+        setMessage(`Welcome, ${decoded.name}. Please complete your registration with a username.`);
     };
 
     const handleGoogleFailure = (error) => {
@@ -77,61 +59,54 @@ const Signup = () => {
         setError('Google login failed. Please try again.');
     };
 
-    // Function to reset user details for another signup attempt
-    const resetForm = () => {
-        setUserName('');
-        setUserEmail(''); // Clear user email as well
-        setError(''); // Reset error state
-        setMessage(''); // Reset message state
-    };
-
     return (
-        <GoogleOAuthProvider clientId="365155987060-645o2sm1sehrspf4uqhq2gsuv8ie12j2.apps.googleusercontent.com">
-            <div className="min-h-screen max-w-md  mx-auto mt-10 p-6 bg-white rounded-lg">
-            <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-                <h2 className="text-2xl font-bold mb-5 text-center">Sign Up</h2>
-                {error && <div className="bg-red-100 text-red-700 p-3 mb-5 rounded">{error}</div>}
-                
-                {userEmail && (
-                    <div className="bg-yellow-100 text-yellow-700 p-3 mb-5 rounded">
-                        Current Email: <strong>{userEmail}</strong>
-                    </div>
-                )}
+        <GoogleOAuthProvider clientId="591480352874-umkc4sq466ojjtn3hfubqgtnthkso4a4.apps.googleusercontent.com">
+            <div className="container d-flex align-items-center justify-content-center min-vh-100">
+                <div className="card shadow p-4 w-100" style={{ maxWidth: '400px' }}>
+                    <h2 className="text-center mb-4">Sign Up</h2>
+                    
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    
+                    {userEmail && (
+                        <div className="alert alert-warning">
+                            Current Email: <strong>{userEmail}</strong>
+                        </div>
+                    )}
 
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="userName" className="block text-gray-700 font-medium mb-2">Username</label>
-                        <input 
-                            type="text" 
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                            id="userName" 
-                            value={userName} 
-                            onChange={(e) => setUserName(e.target.value)} 
-                            required 
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="userName" className="form-label">Username</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                id="userName" 
+                                value={userName} 
+                                onChange={(e) => setUserName(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary w-100"
+                        >
+                            Complete Signup
+                        </button>
+                    </form>
+
+                    <div className="text-center mt-4">
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={handleGoogleFailure}
+                            type="icon"
                         />
                     </div>
-                    <button 
-                        type="submit" 
-                        className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
-                    >
-                        Complete Signup
-                    </button>
-                </form>
 
-                <div className="mt-5 text-center">
-                    <GoogleLogin
-                        onSuccess={handleGoogleSuccess}
-                        onError={handleGoogleFailure}
-                        type='icon'
-                    />
+                    <p className="text-center mt-3">
+                        Already have an account? <Link to="/">Login</Link>
+                    </p>
+
+                    <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
                 </div>
-
-                <p className="mt-4 text-center text-gray-600">
-                    Already have an account? <Link to="/" className="text-blue-500 hover:underline">Login</Link>
-                </p>
-
-                <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
-            </div>
             </div>
         </GoogleOAuthProvider>
     );
