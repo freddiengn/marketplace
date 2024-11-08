@@ -60,7 +60,7 @@ const Signup = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="591480352874-umkc4sq466ojjtn3hfubqgtnthkso4a4.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="365155987060-645o2sm1sehrspf4uqhq2gsuv8ie12j2.apps.googleusercontent.com">
             <div className="container d-flex align-items-center justify-content-center min-vh-100">
                 <div className="card shadow p-4 w-100" style={{ maxWidth: '400px' }}>
                     <h2 className="text-center mb-4">Sign Up</h2>
