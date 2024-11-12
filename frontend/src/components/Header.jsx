@@ -1,42 +1,56 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-    };
-
-    return (
-        <nav className="navbar navbar-expand-md navbar-light bg-light shadow-sm">
-            <div className="container">
-                <Link className="navbar-brand fw-bold" to="/">My React App</Link>
-                
-                <button 
-                    onClick={toggleMenu} 
-                    className="navbar-toggler" 
-                    type="button" 
-                    aria-controls="navbarNav" 
-                    aria-expanded={isOpen ? "true" : "false"} 
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                
-                <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`} id="navbarNav">
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/signup">Sign Up</Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+/* This component checks the currents status of the login
+Send a boolean to check the status of the user*/
+const Header = (props) => {
+  let button;
+  if (props.loggedIn === "false") {
+    button = (
+      <>
+        <li className="nav-item">
+          <Link className="nav-link active" to="/login">
+            Login
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link active" to="/signup">
+            Sign Up
+          </Link>
+        </li>
+      </>
     );
+  } else {
+    button = (
+      <>
+        <li className="nav-item">
+          <Link className="nav-link active" to="/logout">
+            Logout
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link active" to="/chats">
+            Chats
+          </Link>
+        </li>
+      </>
+    );
+  }
+  return (
+    <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <a class="navbar-brand" href="/home">
+            Owl Swap
+          </a>
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">{button}</ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 };
 
 export default Header;

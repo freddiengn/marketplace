@@ -1,13 +1,10 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import Element_Page_Layout from "../components/Element_Page_Layout";
 
 const Home = () => {
   return (
     <body className="d-flex flex-column min-vh-100">
       <div className="container">
-        <Header loggedIn="true" />
         <Element_Page_Layout />
         <br />
         <br />
