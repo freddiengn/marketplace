@@ -17,6 +17,7 @@ import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OAuth2Service;
 import com.example.backend.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Map;
