@@ -9,6 +9,9 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.response.UserResponse;
 import com.example.backend.util.GenerateUtils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
