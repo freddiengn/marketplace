@@ -41,7 +41,7 @@ const Header = (props) => {
     <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a class="navbar-brand" href="/home">
+          <a className="navbar-brand" href="/home">
             Owl Swap
           </a>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">

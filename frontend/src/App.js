@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Index from "./temp";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/chats" element={<Index />} />
         {/* Add more routes as needed */}
       </Routes>
       <Footer />
