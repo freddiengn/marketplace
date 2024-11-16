@@ -17,7 +17,6 @@ import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OAuth2Service;
 import com.example.backend.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Map;
@@ -25,19 +24,17 @@ import java.util.Map;
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
-    private final AuthenticationService authenticationService;
-    private final UserService userService;
-    @Autowired
+
+    @Autowired 
     private OAuth2Service oAuth2Service;
 
+    @Autowired 
+    private AuthenticationService authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService,
-            UserService userService) {
-        this.authenticationService = authenticationService;
-        this.userService = userService;
-    }
+    @Autowired 
+    private UserService userService;
 
-   @PostMapping("/google")
+    @PostMapping("/google")
     public ResponseEntity<UserResponse> handleGoogleLogin(
             @RequestBody Map<String, String> requestBody,
             HttpServletResponse response) {
@@ -78,7 +75,6 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> register(@RequestBody RegisterUserDto registerUserDto) throws Exception {
         UserResponse registeredUser = authenticationService.signup(registerUserDto);
-
         return ResponseEntity.ok(registeredUser);
     }
 
