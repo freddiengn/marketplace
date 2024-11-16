@@ -3,7 +3,7 @@ import Element_Page_Layout from "../components/Element_Page_Layout";
 
 const Home = () => {
   return (
-    <body className="d-flex flex-column min-vh-100">
+    <body className="d-flex flex-column min-vh-100 bg-danger">
       <div className="container">
         <Element_Page_Layout />
         <br />

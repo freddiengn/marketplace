@@ -22,7 +22,7 @@ const Element_Page_Layout = (prop) => {
   }
 
   return (
-    <div className="album py-5 bg-light">
+    <div className="album py-5 bg-danger">
       <div className="container">
         <div className="row">{elements}</div>
       </div>

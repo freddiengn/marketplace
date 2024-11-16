@@ -1,8 +1,14 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
 var Index = () => {
   return (
     <>
+      <Helmet>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script src="main.js"></script>
+      </Helmet>
       <noscript>
         <h2>Sorry! Your browser doesn't support Javascript</h2>
       </noscript>
@@ -35,7 +41,7 @@ var Index = () => {
           </div>
           <div className="connecting">Connecting...</div>
           <ul id="messageArea"></ul>
-          <form id="messageForm" name="messageForm">
+          <form id="messageForm" name="messageForm" action="">
             <div className="form-group">
               <div className="input-group clearfix">
                 <input

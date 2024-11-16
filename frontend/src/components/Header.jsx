@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-/* This component checks the currents status of the login
-Send a boolean to check the status of the user*/
+/* This component checks the current status of the login
+and sends a boolean to check the status of the user */
 const Header = (props) => {
   let button;
   if (props.loggedIn === "false") {
@@ -38,18 +38,22 @@ const Header = (props) => {
     );
   }
   return (
-    <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/home">
-            Owl Swap
-          </a>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">{button}</ul>
-          </div>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="/home">
+          <img
+            src="https://en-news.tuj.ac.jp/wp-content/uploads/2023/04/tuj_news_logo.png"
+            alt="temple Logo"
+            className="d-inline align-left"
+          />
+          <p>Owl Swap</p>
+        </a>
+
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav ms-auto">{button}</ul>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 };
 
