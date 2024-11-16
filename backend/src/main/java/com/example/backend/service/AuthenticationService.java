@@ -1,16 +1,13 @@
 package com.example.backend.service;
+
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired; // Import for field-based injection
 
 import com.example.backend.dto.RegisterUserDto;
-
-
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.response.UserResponse;
 import com.example.backend.util.GenerateUtils;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -19,15 +16,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
-    private final UserRepository userRepository;
-    private final OAuth2Service oAuth2Service;
-    public AuthenticationService(
-        UserRepository userRepository,
-        OAuth2Service oAuth2Servic
-    ) {
-        this.userRepository = userRepository;
-        this.oAuth2Service = oAuth2Servic;
-    }
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired 
+    private OAuth2Service oAuth2Service;
 
     public UserResponse signup(RegisterUserDto input) throws Exception {
         Map<String, Object> decodedInfo = oAuth2Service.decode(input.getCredential());
@@ -43,7 +37,7 @@ public class AuthenticationService {
         User user = new User();
         user.setUserId(GenerateUtils.generateUUID());
         user.setUserName(input.getUserName());
-        user.setEmail(email);                
+        user.setEmail(email);
         user.setIsActive(true);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
