@@ -15,7 +15,7 @@ const Element_Page_Layout = (prop) => {
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSG-kAeynj8yPVNDIYMwuXkNBtxou9wOVjpw&s"
           alt="A cat Image"
           title={a}
-          edscription="This is a test case"
+          description="This is a test case"
         />
       </div>
     );

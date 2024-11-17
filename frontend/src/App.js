@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Index from "./temp";
+import Post_Details from "./components/Post_Details";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chats" element={<Index />} />
+        <Route path="/post_details" element={<Post_Details />} />
         {/* Add more routes as needed */}
       </Routes>
       <Footer />
