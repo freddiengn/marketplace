@@ -15,7 +15,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import ProductService from "../services/ProductService"; // Import the ProductService
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ElementPageLayout from "../components/ElementPageLayout";
+import Element_Page_Layout from "../components/Element_Page_Layout";
 import { useForm } from "antd/lib/form/Form";
 
 const Home = () => {
