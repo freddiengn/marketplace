@@ -38,4 +38,5 @@ public class OAuth2Service {
             throw new IllegalArgumentException("Invalid ID token");
         }
     }
+
 }
