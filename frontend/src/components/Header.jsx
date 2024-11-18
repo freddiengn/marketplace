@@ -8,7 +8,7 @@ const Header = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  if (!isLoggedIn) {
+  if (isLoggedIn) {
     button = (
       <>
         <li className="nav-item">
