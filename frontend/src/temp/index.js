@@ -59,19 +59,6 @@ var Index = () => {
           </form>
         </div>
       </div>
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"
-        crossOrigin="true"
-      ></script>
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
-        crossOrigin="true"
-      ></script>
-      <script
-        async
-        src="main.js"
-        onLoad={() => console.log("main is being")}
-      ></script>
     </>
   );
 };

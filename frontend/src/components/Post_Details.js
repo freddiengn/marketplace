@@ -1,6 +1,8 @@
 import React from "react";
+import { getProduct } from "../services/ProductService";
 
 const Post_Details = (prop) => {
+  const product = getProduct(prop.id);
   return (
     <section className="hero bg-dark pt-5">
       <div className="container bg-danger">
