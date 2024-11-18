@@ -19,12 +19,7 @@ const Login = () => {
     if (query.get("error")) {
       setError("Login failed. Please try again.");
     } else if (query.get("success")) {
-      setMessage("Login successful! Redirecting to home...");
-      setShowModal(true);
-      setTimeout(() => {
-        setShowModal(false);
-        navigate("/home");
-      }, 2000);
+      navigate("/home");
     }
   }, [location, navigate]);
 
@@ -55,10 +50,10 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId="365155987060-645o2sm1sehrspf4uqhq2gsuv8ie12j2.apps.googleusercontent.com">
-      <div className="container min-vh-100 d-flex justify-content-center align-items-center">
+      <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-dark">
         <div
-          className="card p-4 shadow-lg"
-          style={{ maxWidth: "400px", width: "100%" }}
+          className="card p-4 shadow-lg rounded-circle"
+          style={{ maxWidth: "400px", width: "50%" }}
         >
           <h2 className="card-title text-center mb-4">Login</h2>
           {error && <div className="alert alert-danger">{error}</div>}
@@ -76,11 +71,6 @@ const Login = () => {
               Sign Up
             </Link>
           </p>
-          <SuccessModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            message={message}
-          />
         </div>
       </div>
     </GoogleOAuthProvider>

@@ -28,7 +28,7 @@ const Element_Page_Layout = () => {
   }
 
   return (
-    <div className="album py-5 bg-light">
+    <div className="album py-5 bg-dark">
       <div className="container">
         <div className="row">
           {/* Display products dynamically */}
