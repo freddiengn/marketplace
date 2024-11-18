@@ -35,6 +35,7 @@ const Element_Page_Layout = () => {
           {products.map((product) => (
             <div className="col-md-4" key={product.productId}>
               <Element_Layout
+                productid={product.productId}
                 src={product.imageUrl || "https://via.placeholder.com/150"} // Use product image URL or a placeholder
                 alt={product.title}
                 title={product.title}

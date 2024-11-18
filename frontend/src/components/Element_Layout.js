@@ -1,13 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 /*As of now prop requires:
 Image source
 image alternative
 Element Title
 Element description*/
+
 const Element_Layout = (prop) => {
+  const { productid, src, title, description } = prop;
   return (
-    <a href="/post_details">
+    <Link to={`/post_details/${productid}`} state={{ title, src, description }}>
       <div className="card">
         <img className="card-img-top" src={prop.src} alt={prop.alt} />
         <div className="card-body">
@@ -18,7 +21,7 @@ const Element_Layout = (prop) => {
           </p>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 export default Element_Layout;

@@ -27,7 +27,7 @@ const createProduct = async (productData) => {
 };
 
 //Testing for getting products.
-const getProduct = async (productData) => {
+export const getProduct = async (productData) => {
   try {
     console.log(productData);
     const response = await axios.post(API_URL, productData);
@@ -41,5 +41,4 @@ const getProduct = async (productData) => {
 export default {
   getProducts,
   createProduct,
-  getProduct,
 };
