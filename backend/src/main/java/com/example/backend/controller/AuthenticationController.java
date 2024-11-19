@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import com.example.backend.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RequestMapping("/auth")
@@ -90,5 +93,22 @@ public class AuthenticationController {
     public ResponseEntity<Boolean> userNameExists(@PathVariable String username) {
         boolean exists = userService.checkUserNameExists(username);
         return ResponseEntity.ok(exists);
+    }
+
+    // Get the current user --temp
+    @GetMapping("/current-user")
+    public ResponseEntity<Map<String, Object>> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();  // The user's email (or username, depending on your setup)
+            // You can return more user details if needed
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("email", username);
+            // Add more user details if necessary (like roles, etc.)
+            return ResponseEntity.ok(userInfo);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

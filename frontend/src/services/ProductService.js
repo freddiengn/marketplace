@@ -1,7 +1,7 @@
 // services/ProductService.js
-import axios from 'axios';
+import axios from "axios";
 axios.defaults.withCredentials = true;
-const API_URL = 'http://localhost:8080/api/products'; // Update with your backend URL
+const API_URL = "http://localhost:8080/api/products"; // Update with your backend URL
 
 // Fetch all products
 const getProducts = async () => {
@@ -9,7 +9,7 @@ const getProducts = async () => {
     const response = await axios.get(API_URL);
     return response.data;
   } catch (error) {
-    console.error('Error fetching products', error);
+    console.error("Error fetching products", error);
     throw error;
   }
 };
@@ -21,7 +21,19 @@ const createProduct = async (productData) => {
     const response = await axios.post(API_URL, productData);
     return response.data;
   } catch (error) {
-    console.error('Error creating product', error);
+    console.error("Error creating product", error);
+    throw error;
+  }
+};
+
+//Testing for getting products.
+export const getProduct = async (productData) => {
+  try {
+    console.log(productData);
+    const response = await axios.post(API_URL, productData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating product", error);
     throw error;
   }
 };

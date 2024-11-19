@@ -28,13 +28,14 @@ const Element_Page_Layout = () => {
   }
 
   return (
-    <div className="album py-5 bg-light">
+    <div className="album py-5 bg-dark">
       <div className="container">
         <div className="row">
           {/* Display products dynamically */}
           {products.map((product) => (
             <div className="col-md-4" key={product.productId}>
               <Element_Layout
+                productid={product.productId}
                 src={product.imageUrl || "https://via.placeholder.com/150"} // Use product image URL or a placeholder
                 alt={product.title}
                 title={product.title}

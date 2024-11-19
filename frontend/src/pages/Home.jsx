@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Row, Col, Modal, Form, Input, InputNumber, Upload, message } from "antd";
+import {
+  Card,
+  Button,
+  Row,
+  Col,
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Upload,
+  message,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ProductService from "../services/ProductService"; // Import the ProductService
 import ElementPageLayout from "../components/ElementPageLayout";
-import { useForm } from 'antd/lib/form/Form';
+import { useForm } from "antd/lib/form/Form";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -28,18 +39,18 @@ const Home = () => {
   // Handle product creation
   const handleCreateProduct = async (values) => {
     const formData = new FormData();
-    
+
     // Append text data to the FormData
-    formData.append('title', values.title);
-    formData.append('category', values.category);
-    formData.append('price', values.price);
-    formData.append('details', values.details);
-    formData.append('condition', values.condition);
+    formData.append("title", values.title);
+    formData.append("category", values.category);
+    formData.append("price", values.price);
+    formData.append("details", values.details);
+    formData.append("condition", values.condition);
 
     // Append file data to the FormData
     const file = values.image?.fileList[0]?.originFileObj;
     if (file) {
-      formData.append('image', file);
+      formData.append("image", file);
     }
 
     try {
@@ -64,7 +75,7 @@ const Home = () => {
   };
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="d-flex flex-column min-vh-100 bg-danger">
       <div className="container">
         <ElementPageLayout />
         <br />
@@ -89,11 +100,7 @@ const Home = () => {
           onCancel={handleCancel}
           footer={null}
         >
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleCreateProduct}
-          >
+          <Form form={form} layout="vertical" onFinish={handleCreateProduct}>
             <Form.Item
               label="Title"
               name="title"
@@ -105,7 +112,9 @@ const Home = () => {
             <Form.Item
               label="Category"
               name="category"
-              rules={[{ required: true, message: "Please input the category!" }]}
+              rules={[
+                { required: true, message: "Please input the category!" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -129,7 +138,9 @@ const Home = () => {
             <Form.Item
               label="Condition"
               name="condition"
-              rules={[{ required: true, message: "Please input the condition!" }]}
+              rules={[
+                { required: true, message: "Please input the condition!" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -155,8 +166,6 @@ const Home = () => {
             </Form.Item>
           </Form>
         </Modal>
-
-        
       </div>
     </div>
   );
