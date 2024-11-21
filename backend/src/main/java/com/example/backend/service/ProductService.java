@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 
 import java.io.FileOutputStream;
@@ -30,7 +29,7 @@ public class ProductService {
     private final UserRepository userRepository;
 
     @Value("${upload.path}")
-    private String uploadPath; // Folder path to save images
+    private String uploadPath; 
 
     public ProductService(ProductRepository productRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
@@ -62,42 +61,38 @@ public class ProductService {
     }
 
     public ProductResponse createProduct(ProductDto productDto) throws IOException {
-        // Get user email from security context (assuming email is stored in the principal)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
     
         if (authentication != null && authentication.getPrincipal() != null) {
-            userEmail = (String) authentication.getPrincipal(); // Assuming email is the principal
+            userEmail = (String) authentication.getPrincipal(); 
         }
     
         if (userEmail == null) {
             throw new RuntimeException("No authenticated user found.");
         }
     
-        // Find the user by email
-        User user = userRepository.findByEmail(userEmail); // Assuming you have a service to get the user by email
+        User user = userRepository.findByEmail(userEmail);
         if (user == null) {
             throw new RuntimeException("User not found with email: " + userEmail);
         }
     
-        // Now use the user's ID for the createdBy field
         Product product = new Product();
         product.setTitle(productDto.getTitle());
         product.setCategory(productDto.getCategory());
         product.setPrice(productDto.getPrice());
         product.setDetails(productDto.getDetails());
         product.setCondition(productDto.getCondition());
-        product.setCreatedBy(user); // Set the user's ID as the createdBy
+        product.setCreatedBy(user);
     
         if (productDto.getImage() != null && !productDto.getImage().isEmpty()) {
             String imageUrl = saveImage(productDto.getImage());
-            product.setImageUrl(imageUrl); // Set the image URL in the product
+            product.setImageUrl(imageUrl);
         }
     
         product.setCreatedAt(new Date());
         product.setUpdatedAt(new Date());
     
-        // Save the product to the database
         Product savedProduct = productRepository.save(product);
     
         return convertToProductResponse(savedProduct);
@@ -113,7 +108,6 @@ public class ProductService {
         existingProduct.setDetails(updatedProductDto.getDetails());
         existingProduct.setCondition(updatedProductDto.getCondition());
 
-        // If new image is uploaded, save the image and set the URL
         if (updatedProductDto.getImage() != null && !updatedProductDto.getImage().isEmpty()) {
             String imageUrl = saveImage(updatedProductDto.getImage());
             existingProduct.setImageUrl(imageUrl);
@@ -143,7 +137,7 @@ public class ProductService {
 
         Path imagePath = uploadDir.resolve(fileName);
         try (FileOutputStream outputStream = new FileOutputStream(imagePath.toFile())) {
-            outputStream.write(imageFile.getBytes()); // Writing bytes to the file
+            outputStream.write(imageFile.getBytes());
         }
         return "/images/" + fileName;
     }
@@ -153,7 +147,6 @@ public class ProductService {
             return null;
         }
 
-        // Format the full image URL
         String formattedImageUrl = product.getImageUrl();
         if (formattedImageUrl != null && !formattedImageUrl.isEmpty()) {
             formattedImageUrl = "http://localhost:8080" + formattedImageUrl;
@@ -166,7 +159,7 @@ public class ProductService {
                 product.getPrice(),
                 product.getDetails(),
                 product.getCondition(),
-                formattedImageUrl, // Use the formatted URL
+                formattedImageUrl,
                 product.getIsSold(),
                 product.getCreatedAt(),
                 product.getUpdatedAt()
