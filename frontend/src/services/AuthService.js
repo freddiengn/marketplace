@@ -35,3 +35,14 @@ export const checkUserNameExists = async (userName) => {
     const response = await axios.get(`${API_URL}/check-username/${userName}`);
     return response.data; // This will be a boolean
 };
+
+// Function to log out the user
+export const logout = async () => {
+    try {
+        const response = await axios.post(`${API_URL}/logout`);
+        return response.data; // This will be an empty response if the logout is successful
+    } catch (error) {
+        console.error("Error logging out:", error);
+        throw error;
+    }
+};
