@@ -28,13 +28,13 @@ import java.util.Map;
 @RestController
 public class AuthenticationController {
 
-    @Autowired 
+    @Autowired
     private OAuth2Service oAuth2Service;
 
-    @Autowired 
+    @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired 
+    @Autowired
     private UserService userService;
 
     @PostMapping("/google")
@@ -57,12 +57,12 @@ public class AuthenticationController {
 
             // Create an HTTP-only cookie with the credential token
             ResponseCookie cookie = ResponseCookie.from("auth_token", credential)
-                .httpOnly(true)
-                .secure(true) // Use true if your app runs over HTTPS
-                .sameSite("Strict") // CSRF protection
-                .path("/") // Cookie is available across the whole app
-                .maxAge(24 * 60 * 60) // 1 day expiry
-                .build();
+                    .httpOnly(true)
+                    .secure(true) // Use true if your app runs over HTTPS
+                    .sameSite("Strict") // CSRF protection
+                    .path("/") // Cookie is available across the whole app
+                    .maxAge(24 * 60 * 60) // 1 day expiry
+                    .build();
 
             // Add the cookie to the response headers
             response.addHeader("Set-Cookie", cookie.toString());
@@ -80,39 +80,38 @@ public class AuthenticationController {
         UserResponse registeredUser = authenticationService.signup(registerUserDto);
         return ResponseEntity.ok(registeredUser);
     }
- @GetMapping("/google-info")
+
+    @GetMapping("/google-info")
     public ResponseEntity<GoogleUserDto> getGoogleUserInfo() {
         try {
-   
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    
+
             if (authentication != null && authentication.isAuthenticated()) {
-          
+
                 Object details = authentication.getDetails();
-                
+
                 if (details instanceof GoogleUserDto) {
-                    GoogleUserDto googleUserInfo = (GoogleUserDto) details; 
-    
-           
+                    GoogleUserDto googleUserInfo = (GoogleUserDto) details;
+
                     return ResponseEntity.ok(googleUserInfo);
                 } else {
-                    return ResponseEntity.status(401).body(null); 
+                    return ResponseEntity.status(401).body(null);
                 }
             } else {
                 return ResponseEntity.status(401).body(null);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(null); 
+            return ResponseEntity.status(500).body(null);
         }
     }
-    // Endpoint to check if email exists
+
     @GetMapping("/check-email/{email}")
     public ResponseEntity<Boolean> emailExists(@PathVariable String email) {
         boolean exists = userService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
 
-    // Endpoint to check if username exists
     @GetMapping("/check-username/{username}")
     public ResponseEntity<Boolean> userNameExists(@PathVariable String username) {
         boolean exists = userService.checkUserNameExists(username);
