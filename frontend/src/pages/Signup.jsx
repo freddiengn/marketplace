@@ -60,7 +60,7 @@ const Signup = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="365155987060-645o2sm1sehrspf4uqhq2gsuv8ie12j2.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
             <div className="container d-flex align-items-center justify-content-center min-vh-100">
                 <div className="card shadow p-4 w-100" style={{ maxWidth: '400px' }}>
                     <h2 className="text-center mb-4">Sign Up</h2>
