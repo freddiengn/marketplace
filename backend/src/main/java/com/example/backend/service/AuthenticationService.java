@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired; // Import for field-based injection
+import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.entity.User;
