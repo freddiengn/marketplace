@@ -54,7 +54,7 @@ const Header = (props) => {
             aria-expanded={dropdownOpen ? "true" : "false"}
             onClick={toggleDropdown}
           >
-    {userInfo ? (
+            {userInfo ? (
               <img
                 src={userInfo.picture} // Use the picture from Google User info
                 alt="User Profile"
