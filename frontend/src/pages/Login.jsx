@@ -1,10 +1,10 @@
-// src/pages/Login.js
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import GoogleLogin
-import { handleGoogleLogin } from "../services/AuthService"; // Import the auth service
-import SuccessModal from "../components/SuccessModal";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { handleGoogleLogin } from "../services/AuthService";
+import { Card, Typography, Alert, Button } from "antd";
+
+const { Title, Text } = Typography;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +14,6 @@ const Login = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Check if there's an error in the URL
     const query = new URLSearchParams(location.search);
     if (query.get("error")) {
       setError("Login failed. Please try again.");
@@ -23,20 +22,18 @@ const Login = () => {
     }
   }, [location, navigate]);
 
-  // Handle Google login success
   const handleGoogleSuccess = async (credentialResponse) => {
-    const { credential } = credentialResponse; // Extract credential from the response
+    const { credential } = credentialResponse;
     try {
-      const response = await handleGoogleLogin(credential); // Use the auth service to handle login
+      const response = await handleGoogleLogin(credential);
       if (response.email) {
-        // Handle successful login
         setMessage("Login successful! Redirecting to home...");
         setShowModal(true);
         setTimeout(() => {
           navigate("/home");
         }, 2000);
       } else {
-        setError("Login failed. Please try again."); // Handle server-side error
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
       setError(error.message || "Login failed. Please try again.");
@@ -50,28 +47,85 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-dark">
-        <div
-          className="card p-4 shadow-lg rounded-circle"
-          style={{ maxWidth: "400px", width: "50%" }}
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Card
+          style={{
+            maxWidth: 400,
+            width: "100%",
+            padding: "32px",
+            borderRadius: "16px",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
+            textAlign: "center",
+            backgroundColor: "#ffffff",
+          }}
         >
-          <h2 className="card-title text-center mb-4">Login</h2>
-          {error && <div className="alert alert-danger">{error}</div>}
+          <Title level={2} style={{ color: "#000dff", fontWeight: "bold", marginBottom: 24 }}>
+            Welcome Back
+          </Title>
 
-          {/* Google Login button */}
+          {error && (
+            <Alert
+              message={error}
+              type="error"
+              showIcon
+              style={{
+                marginBottom: 16,
+                borderRadius: "8px",
+              }}
+            />
+          )}
+
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleFailure}
-            type="icon" // Display as icon button if needed
+            render={(renderProps) => (
+              <Button
+                type="primary"
+                block
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                style={{
+                  height: "48px",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  background: "#4285F4",
+                  borderColor: "#4285F4",
+                  borderRadius: "8px",
+                }}
+              >
+                Sign in with Google
+              </Button>
+            )}
           />
 
-          <p className="mt-3 text-center">
+          <Text
+            style={{
+              display: "block",
+              marginTop: 24,
+              textAlign: "center",
+              color: "#6c757d",
+              fontSize: "14px",
+            }}
+          >
             Don't have an account?{" "}
-            <Link to="/signup" className="text-primary">
+            <Link
+              to="/signup"
+              style={{
+                color: "#000dff",
+                fontWeight: "bold",
+              }}
+            >
               Sign Up
             </Link>
-          </p>
-        </div>
+          </Text>
+        </Card>
       </div>
     </GoogleOAuthProvider>
   );

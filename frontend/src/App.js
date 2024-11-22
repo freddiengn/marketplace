@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/post_details/:productid" element={<Post_Details />} />
         {/* Add more routes as needed */}
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </Router>
   );
 };
