@@ -1,30 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Spin, message, Pagination } from "antd";
-import ProductService from "../services/ProductService";
+import { Row, Col, Spin, Pagination } from "antd";
 import ElementLayout from "./ElementLayout";
 
-const ElementPageLayout = () => {
-  const [products, setProducts] = useState([]); // Full list of products
+const ElementPageLayout = ({ products }) => {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [pageSize, setPageSize] = useState(8); // Number of products per page
   const [paginatedProducts, setPaginatedProducts] = useState([]); // Products to display on the current page
-  const [loading, setLoading] = useState(true);
-
-  // Fetch products from server
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const productList = await ProductService.getProducts();
-        setProducts(productList);
-      } catch (error) {
-        message.error("Failed to fetch products.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   // Handle pagination changes
   const handlePaginationChange = (page, size) => {
@@ -32,14 +13,15 @@ const ElementPageLayout = () => {
     setPageSize(size);
   };
 
-  // Update paginated products whenever currentPage or pageSize changes
+  // Update paginated products whenever currentPage, pageSize, or products change
   useEffect(() => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     setPaginatedProducts(products.slice(startIndex, endIndex));
   }, [currentPage, pageSize, products]);
 
-  if (loading) {
+  // Show loading spinner if products are empty
+  if (products.length === 0) {
     return (
       <div
         style={{

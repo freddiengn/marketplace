@@ -1,199 +1,78 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  InputNumber,
-  Upload,
-  message,
-  Typography,
-  Space,
-  Row,
-  Col,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import ProductService from "../services/ProductService"; // Import the ProductService
-import ElementPageLayout from "../components/ElementPageLayout";
-import { useForm } from "antd/lib/form/Form";
+import { Row, Col, Spin, Pagination } from "antd";
+import ElementLayout from "./ElementLayout";
 
-const { Title } = Typography;
+const ElementPageLayout = ({ products }) => {
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [pageSize, setPageSize] = useState(8); // Number of products per page
+  const [paginatedProducts, setPaginatedProducts] = useState([]); // Products to display on the current page
 
-const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = useForm();
-  const [loggedIn, setLoggedIn] = useState(true); // Assume the user is logged in for now
+  // Handle pagination changes
+  const handlePaginationChange = (page, size) => {
+    setCurrentPage(page);
+    setPageSize(size);
+  };
 
-  // Fetch products from the server
+  // Update paginated products whenever currentPage, pageSize, or products change
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const productList = await ProductService.getProducts();
-        setProducts(productList);
-      } catch (error) {
-        message.error("Failed to fetch products.");
-      }
-    };
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    setPaginatedProducts(products.slice(startIndex, endIndex));
+  }, [currentPage, pageSize, products]);
 
-    fetchProducts();
-  }, []);
-
-  // Handle product creation
-  const handleCreateProduct = async (values) => {
-    const formData = new FormData();
-
-    // Append text data to the FormData
-    formData.append("title", values.title);
-    formData.append("category", values.category);
-    formData.append("price", values.price);
-    formData.append("details", values.details);
-    formData.append("condition", values.condition);
-
-    // Append file data to the FormData
-    const file = values.image?.fileList[0]?.originFileObj;
-    if (file) {
-      formData.append("image", file);
-    }
-
-    try {
-      const newProduct = await ProductService.createProduct(formData); // Send FormData to backend
-      setProducts([...products, newProduct]);
-      message.success("Product created successfully!");
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      message.error("Failed to create product.");
-    }
-  };
-
-  // Show the modal for creating a product
-  const showCreateProductModal = () => {
-    setIsModalVisible(true);
-  };
-
-  // Handle modal cancel
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // Show loading spinner if products are empty
+  if (products.length === 0) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spin tip="Loading products..." size="large" />
+      </div>
+    );
+  }
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <div className="container">
-        {/* Page title */}
-        <Title level={2} style={{ textAlign: "center", marginBottom: "20px" }}>
-          Product Showcase
-        </Title>
+    <div style={{ background: "#f0f2f5", padding: "20px 0" }}>
+      <Row gutter={[16, 16]}>
+        {/* Display products dynamically */}
+        {paginatedProducts.map((product) => (
+          <Col xs={24} sm={12} md={8} lg={6} key={product.productId}>
+            {/* Use ElementLayout to display each product */}
+            <ElementLayout
+              productid={product.productId}
+              src={product.imageUrl || "https://via.placeholder.com/150"}
+              alt={product.title}
+              title={product.title}
+              description={product.details}
+              price={product.price}
+              condition={product.condition}
+              category={product.category}
+              isSold={product.isSold}
+              createdAt={product.createdAt}
+              updatedAt={product.updatedAt}
+            />
+          </Col>
+        ))}
+      </Row>
 
-        {/* Create Product Button (only if logged in) */}
-        {loggedIn && (
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={showCreateProductModal}
-            style={{
-              marginTop: "20px",
-              width: "200px",
-              fontSize: "16px",
-              borderRadius: "8px",
-              textAlign: "center",
-            }}
-          >
-            Create Product
-          </Button>
-        )}
-
-        <ElementPageLayout />
-
-        {/* Create Product Modal */}
-        <Modal
-          title="Create New Product"
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          footer={null}
-          centered
-          width={800} // Increase the modal width to make it larger
-        >
-          <Form form={form} layout="vertical" onFinish={handleCreateProduct}>
-            {/* Row for splitting form fields into two columns */}
-            <Row gutter={24}>
-              {/* First Column */}
-              <Col span={12}>
-                <Form.Item
-                  label="Title"
-                  name="title"
-                  rules={[{ required: true, message: "Please input the title!" }]}
-                >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item
-                  label="Category"
-                  name="category"
-                  rules={[{ required: true, message: "Please input the category!" }]}
-                >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item
-                  label="Price"
-                  name="price"
-                  rules={[{ required: true, message: "Please input the price!" }]}
-                >
-                  <InputNumber min={0} style={{ width: "100%" }} />
-                </Form.Item>
-
-                <Form.Item
-                  label="Condition"
-                  name="condition"
-                  rules={[{ required: true, message: "Please input the condition!" }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-
-              {/* Second Column */}
-              <Col span={12}>
-                <Form.Item
-                  label="Details"
-                  name="details"
-                  rules={[{ required: true, message: "Please input the details!" }]}
-                >
-                  <Input.TextArea rows={4} />
-                </Form.Item>
-
-                <Form.Item
-                  label="Product Image"
-                  name="image"
-                  rules={[{ required: true, message: "Please upload an image!" }]}
-                >
-                  <Upload
-                    listType="picture-card"
-                    beforeUpload={() => false} // Prevent auto upload
-                    maxCount={1}
-                  >
-                    <Button icon={<PlusOutlined />}>Upload</Button>
-                  </Upload>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            {/* Footer with Action Buttons */}
-            <Form.Item>
-              <Space style={{ width: "100%" }}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Create Product
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Modal>
+      {/* Pagination Controls */}
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={products.length}
+          onChange={handlePaginationChange}
+          showSizeChanger
+          pageSizeOptions={["8", "12", "16"]}
+        />
       </div>
     </div>
   );
 };
 
-export default Home;
+export default ElementPageLayout;
