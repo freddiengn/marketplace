@@ -28,9 +28,10 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "details", length = 500)
+    @Lob
+    @Column(name = "details", columnDefinition = "MEDIUMTEXT")
     private String details;
-
+    
     @Column(name = "product_condition", nullable = false, length = 50)
     private String condition;
 
