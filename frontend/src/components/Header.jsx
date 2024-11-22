@@ -1,133 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Menu, Dropdown, Avatar, Layout, Button } from "antd";
+import { UserOutlined, LogoutOutlined, SettingOutlined, MessageOutlined } from "@ant-design/icons";
 import { getGoogleUserInfo, logout } from "../services/AuthService";
 
+const { Header: AntHeader } = Layout;
+
 const Header = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [error, setError] = useState(false); // Track error state for the API call
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
-  const navigate = useNavigate(); // Hook for navigation
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-  // Fetch Google user info on component mount
   useEffect(() => {
     getGoogleUserInfo()
       .then((data) => {
-        console.log(data);
-        setUserInfo(data); // Store the user info if the API call succeeds
-        setIsLoggedIn(true); // Mark the user as logged in
-        setError(false); // Reset error state on success
+        setUserInfo(data);
+        setError(false);
       })
       .catch((error) => {
         console.error("Error fetching user info:", error);
-        setError(true); // Set error state to true if API call fails
-        setIsLoggedIn(false); // User is not logged in
+        setError(true);
       });
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
-  // Hide the header if there is an error or user is not logged in
-  if (error || !isLoggedIn) {
-    return null; // This hides the header if there is an error or not logged in
-  }
-
-  // Handle logout functionality
   const handleLogout = async () => {
     try {
-      // Call the logout function from AuthService
       await logout();
-
-      // Reset the user info and login state
       setUserInfo(null);
-      setIsLoggedIn(false);
-
-      // Navigate to the login page
       navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
 
-  let button = (
-    <>
-      <li className="nav-item">
-        <Link className="nav-link active" to="/chats">
-          Chats
-        </Link>
-      </li>
-      <li className="nav-item dropdown">
-        <a
-          className="nav-link dropdown-toggle rounded-circle w-25"
-          href="#"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded={dropdownOpen ? "true" : "false"}
-          onClick={toggleDropdown}
-        >
-          {userInfo ? (
-            <img
-              src={userInfo.picture} // Use the picture from Google User info
-              alt="User Profile"
-              className="rounded-circle w-125"
-            />
-          ) : (
-            <img
-              src="https://via.placeholder.com/150" // Placeholder image if not available
-              alt="User Profile"
-              className="rounded-circle w-100"
-            />
-          )}
-        </a>
-        <ul
-          className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}
-          aria-labelledby="navbarDropdown"
-        >
-          <li>
-            <a className="dropdown-item" href="#" onClick={handleLogout}>
-              Logout
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Settings
-            </a>
-          </li>
-          <li>
-            <hr className="dropdown-divider" />
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Something else here
-            </a>
-          </li>
-        </ul>
-      </li>
-    </>
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" icon={<MessageOutlined />}>
+        <Link to="/chats">Chats</Link>
+      </Menu.Item>
+      <Menu.Item key="2" icon={<SettingOutlined />}>
+        Settings
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="3" icon={<LogoutOutlined />} onClick={handleLogout}>
+        Logout
+      </Menu.Item>
+    </Menu>
   );
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/home">
-          <img
-            src="https://en-news.tuj.ac.jp/wp-content/uploads/2023/04/tuj_news_logo.png"
-            alt="temple Logo"
-            className="d-inline align-left"
-          />
-          <p>
-            <strong>
-              <em>Owl Swap</em>
-            </strong>
-          </p>
-        </a>
+    <AntHeader style={{ backgroundColor: "#001529", display: "flex", alignItems: "center", padding: "0 24px" }}>
+      <Link to="/home" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#fff" }}>
+        <img
+          src="https://en-news.tuj.ac.jp/wp-content/uploads/2023/04/tuj_news_logo.png"
+          alt="Logo"
+          style={{ height: "40px", marginRight: "10px" }}
+        />
+        <strong style={{ fontSize: "20px", fontStyle: "italic" }}>Owl Swap</strong>
+      </Link>
 
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav ms-auto">{button}</ul>
-        </div>
+      <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "15px" }}>
+        {userInfo ? (
+          <Dropdown overlay={menu} placement="bottomRight" arrow>
+            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+              <Avatar src={userInfo.picture} alt="User Avatar" />
+            </div>
+          </Dropdown>
+        ) : (
+          <Button type="primary" onClick={() => navigate("/login")}>
+            Login
+          </Button>
+        )}
       </div>
-    </nav>
+    </AntHeader>
   );
 };
 
