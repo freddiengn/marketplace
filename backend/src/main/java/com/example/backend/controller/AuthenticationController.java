@@ -117,4 +117,19 @@ public class AuthenticationController {
         boolean exists = userService.checkUserNameExists(username);
         return ResponseEntity.ok(exists);
     }
+    
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("auth_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
+    }
 }
