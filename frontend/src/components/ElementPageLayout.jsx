@@ -37,11 +37,11 @@ const ElementPageLayout = ({ products }) => {
   }
 
   return (
-    <div style={{ background: "#f0f2f5", padding: "20px 0" }}>
+    <div style={{ background: "#f0f2f5" }}>
       <Row gutter={[16, 16]}>
         {/* Display products dynamically */}
         {paginatedProducts.map((product) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={product.productId}>
+          <Col xs={24} sm={12} md={8} lg={8} key={product.productId}>
             {/* Use ElementLayout to display each product */}
             <ElementLayout
               productid={product.productId}

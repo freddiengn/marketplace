@@ -1,26 +1,69 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { Row, Col, Button, Card, Typography, Space } from "antd";
+import { MailOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
-const Post_Details = () => {
+const { Title, Paragraph } = Typography;
+
+const PostDetails = () => {
   const { productid } = useParams();
   const location = useLocation();
-  const { title, src, description } = location.state || {};
+  const { title, src, description, price, seller } = location.state || {};
+
   return (
-    <section className="hero bg-dark pt-5">
-      <div className="container bg-danger">
-        <div className="row gutter-2 gutter-md-4 justify-content-between">
-          <div className="col-lg-7">
-            <img src={src} />
-          </div>
-          <div className="col-lg-5 mb-5 mb-lg-0">
-            <h1>{title}</h1>
-            <br />
-            <p>{description}</p>
-          </div>
-        </div>
+    <section style={{ paddingTop: "50px", background: "#f0f2f5" }}>
+      <div className="container">
+        <Row gutter={[16, 16]} justify="space-between">
+          <Col lg={12} xs={24}>
+            {/* Product Image */}
+            <Card
+              hoverable
+              cover={<img alt={title} src={src} />}
+              style={{ borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+            />
+          </Col>
+
+          <Col lg={12} xs={24}>
+            {/* Product Details */}
+            <Card
+              title={<Title level={2}>{title}</Title>}
+              style={{ borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+            >
+              <Typography.Text strong style={{ fontSize: "18px" }}>
+                Price: ${price}
+              </Typography.Text>
+              <br />
+              <Paragraph>{description}</Paragraph>
+
+              {/* Seller Information */}
+              <Typography.Text>Seller: {seller}</Typography.Text>
+              <br />
+
+              {/* Action Buttons */}
+              <Space style={{ marginTop: "20px" }}>
+                <Button
+                  type="primary"
+                  icon={<ShoppingCartOutlined />}
+                  size="large"
+                  style={{ width: "150px" }}
+                >
+                  Buy
+                </Button>
+                <Button
+                  type="default"
+                  icon={<MailOutlined />}
+                  size="large"
+                  style={{ width: "180px" }}
+                >
+                  Message for Seller
+                </Button>
+              </Space>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </section>
   );
 };
 
-export default Post_Details;
+export default PostDetails;
