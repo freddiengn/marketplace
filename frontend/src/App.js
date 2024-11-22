@@ -13,12 +13,12 @@ const App = () => {
     <Router>
    
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<MainLayout><Welcome /></MainLayout>} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chats" element={<Index />} />
-        <Route path="/post_details/:productid" element={<PostDetails />} />
+        <Route path="/post_details/:productid" element={<MainLayout><PostDetails /></MainLayout>} />
         {/* Add more routes as needed */}
       </Routes>
   
