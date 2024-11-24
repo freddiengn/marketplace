@@ -101,7 +101,7 @@ public class AuthenticationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();  // The user's email (or username, depending on your setup)
+            String username = authentication.getName();  
             // You can return more user details if needed
             Map<String, Object> userInfo = new HashMap<>();
             userInfo.put("email", username);
