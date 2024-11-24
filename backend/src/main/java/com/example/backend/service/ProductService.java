@@ -107,6 +107,12 @@ public class ProductService {
         existingProduct.setPrice(updatedProductDto.getPrice());
         existingProduct.setDetails(updatedProductDto.getDetails());
         existingProduct.setCondition(updatedProductDto.getCondition());
+        if(updatedProductDto.getCondition().equals("Sold")) {
+            existingProduct.setIsSold(true);
+        }
+        else {
+            existingProduct.setIsSold(false);
+        }
 
         if (updatedProductDto.getImage() != null && !updatedProductDto.getImage().isEmpty()) {
             String imageUrl = saveImage(updatedProductDto.getImage());
@@ -162,7 +168,8 @@ public class ProductService {
                 formattedImageUrl,
                 product.getIsSold(),
                 product.getCreatedAt(),
-                product.getUpdatedAt()
+                product.getUpdatedAt(),
+                product.getCreatedBy().getUserName()
         );
     }
     public List<ProductResponse> getProductsByCurrentUser() {

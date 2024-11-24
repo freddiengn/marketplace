@@ -16,6 +16,7 @@ const ProductCard = (props) => {
     category,
     createdAt,
     updatedAt,
+    isSold, // new prop to indicate if the product is sold
   } = props;
 
   return (
@@ -25,8 +26,10 @@ const ProductCard = (props) => {
       style={{
         borderRadius: "12px",
         overflow: "hidden",
-        backgroundColor: "#ffffff",
-        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+        backgroundColor: isSold ? "#f0f0f0" : "#ffffff", // Change background color if sold
+        boxShadow: isSold
+          ? "0 8px 16px rgba(0, 0, 0, 0.1)"
+          : "0 8px 16px rgba(0, 0, 0, 0.1)", // Optional shadow change
         transition: "transform 0.3s, box-shadow 0.3s",
       }}
       cover={
@@ -84,7 +87,7 @@ const ProductCard = (props) => {
         </Title>
         <Text
           style={{
-            color: "#e60023",
+            color: isSold ? "#cccccc" : "#e60023", // Grey color for sold items
             fontWeight: "bold",
             fontSize: "16px",
             display: "block",
@@ -146,11 +149,18 @@ const ProductCard = (props) => {
             fontSize: "16px",
             borderRadius: "8px",
             transition: "background-color 0.3s",
+            backgroundColor: isSold ? "#cccccc" : "#1890ff", // Disable button if sold
+            cursor: isSold ? "not-allowed" : "pointer",
           }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#004085")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#1890ff")}
+          disabled={isSold} // Disable button for sold products
+          onMouseOver={(e) =>
+            !isSold && (e.target.style.backgroundColor = "#004085")
+          }
+          onMouseOut={(e) =>
+            !isSold && (e.target.style.backgroundColor = "#1890ff")
+          }
         >
-          View details
+          {isSold ? "Sold" : "View details"}
         </Button>
       </Link>
     </Card>
