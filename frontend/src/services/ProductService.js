@@ -79,6 +79,16 @@ const deleteProduct = async (productId) => {
   }
 };
 
+const getProductsByCurrentUser = async () => {
+  try {
+    const response = await api.get(`${API_URL}/user`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products by user", error);
+    throw error;
+  }
+};
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getProducts,
   getProductById,
@@ -87,4 +97,5 @@ export default {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductsByCurrentUser, 
 };

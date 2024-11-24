@@ -9,6 +9,7 @@ import Index from "./temp";
 import PostDetails from "./components/PostDetails";
 import Welcome from "./pages/Welcome";
 import MainLayout from "./layouts/MainLayout";
+import Product from "./pages/Product";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/" element={<MainLayout><Welcome /></MainLayout>} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/product" element={<MainLayout><Product /></MainLayout>} />
         <Route path="/chats" element={<Index />} />
         <Route path="/post_details/:productid" element={<MainLayout><PostDetails /></MainLayout>} />
         <Route path="/signup" element={<GoogleSignup />} />
