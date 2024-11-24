@@ -25,6 +25,7 @@ const Login = () => {
   const handleGoogleSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
     try {
+ 
       const response = await handleGoogleLogin(credential);
       if (response.email) {
         setMessage("Login successful! Redirecting to home...");

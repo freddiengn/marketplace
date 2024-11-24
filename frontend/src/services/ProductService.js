@@ -1,4 +1,4 @@
-import api from "./BaseService"; // Import the configured API instance
+import api from "./BaseService";
 
 const API_URL = "/products";
 
