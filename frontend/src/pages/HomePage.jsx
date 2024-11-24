@@ -55,9 +55,9 @@ const Home = () => {
 
   // Format the price as Vietnamese currency
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(value);
   };
 
@@ -87,7 +87,9 @@ const Home = () => {
               style={{ width: "100%", marginBottom: "16px" }}
               allowClear
               onChange={handleCategoryChange}
+              value={category}
             >
+              <Option value="">All Categories</Option> {/* Add All Categories option */}
               {categories.map((category) => (
                 <Option key={category} value={category}>
                   {category}
@@ -123,9 +125,21 @@ const Home = () => {
               }))}
             />
           ) : (
-            <Typography.Text type="warning">
-              No products match your search or filter criteria.
-            </Typography.Text>
+          <Typography.Text
+            type="default"
+            style={{
+              display: "block",
+              textAlign: "center",
+              fontSize: "16px",
+              color: "#999", // Light gray color for the message
+              fontWeight: "bold", // Bold text for emphasis
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            No products match your search or filter criteria.
+          </Typography.Text>
+
           )}
         </Col>
       </Row>

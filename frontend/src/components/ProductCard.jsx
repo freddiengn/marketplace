@@ -31,7 +31,7 @@ const ProductCard = (props) => {
       }}
       cover={
         <Link
-          to={`/post_details/${productid}`}
+          to={`/product-details/${productid}`}
           state={{
             title,
             src,
@@ -66,7 +66,7 @@ const ProductCard = (props) => {
       }
     >
       <Link
-        to={`/post_details/${productid}`}
+        to={`/product-details/${productid}`}
         state={{
           title,
           src,
@@ -124,7 +124,7 @@ const ProductCard = (props) => {
 
       {/* View Details Button */}
       <Link
-        to={`/post_details/${productid}`}
+        to={`/product-details/${productid}`}
         state={{
           title,
           src,
