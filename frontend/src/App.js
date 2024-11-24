@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import GoogleSignupPage from './pages/GoogleSignupPage';
 import UsernameSignupPage from './pages/UsernameSignupPage';
 import Chat from "./temp";
-import PostDetailsPage from "./pages/PostDetailsPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 import MainLayout from "./layouts/MainLayout";
 import ProductPage from "./pages/ProductPage";
 
@@ -18,7 +18,7 @@ const App = () => {
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/product" element={<MainLayout><ProductPage /></MainLayout>} />
         <Route path="/chats" element={<Chat />} />
-        <Route path="/post_details/:productid" element={<MainLayout><PostDetailsPage /></MainLayout>} />
+        <Route path="/product-details/:productid" element={<MainLayout><ProductDetailsPage /></MainLayout>} />
         <Route path="/signup" element={<GoogleSignupPage />} />
         <Route path="/signup/username" element={<UsernameSignupPage />} />
         {/* Add more routes as needed */}
