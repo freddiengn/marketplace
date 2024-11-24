@@ -5,7 +5,7 @@ import { Alert, Input, Button, Card, Typography } from 'antd';
 
 const { Title, Text } = Typography;
 
-const UsernameSignup = () => {
+const UsernameSignupPage = () => {
     const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
@@ -110,4 +110,4 @@ const UsernameSignup = () => {
     );
 };
 
-export default UsernameSignup;
+export default UsernameSignupPage;

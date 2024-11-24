@@ -15,7 +15,8 @@ const Footer = () => {
             About Us
           </Title>
           <Text style={{ color: "#fff" }}>
-            Welcome to Owl Swap, your trusted platform for selling
+            Welcome to Owl Swap, your trusted platform for connecting, exchanging, and learning. Our mission is to create
+            a community-driven space where users can collaborate and share seamlessly.
           </Text>
         </Col>
 
@@ -26,7 +27,7 @@ const Footer = () => {
           </Title>
           <ul style={{ listStyleType: "none", padding: 0 }}>
             <li>
-              <a href="/home" style={{ color: "#fff" }}>
+              <a href="/" style={{ color: "#fff" }}>
                 Home
               </a>
             </li>
