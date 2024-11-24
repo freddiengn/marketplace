@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Spin, Pagination } from "antd";
-import ElementLayout from "./ElementLayout";
+import ProductCard from "./ProductCard";
 
-const ElementPageLayout = ({ products }) => {
+const ProductList = ({ products }) => {
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [pageSize, setPageSize] = useState(8); // Number of products per page
   const [paginatedProducts, setPaginatedProducts] = useState([]); // Products to display on the current page
@@ -43,7 +43,7 @@ const ElementPageLayout = ({ products }) => {
         {paginatedProducts.map((product) => (
           <Col xs={24} sm={12} md={8} lg={8} key={product.productId}>
             {/* Use ElementLayout to display each product */}
-            <ElementLayout
+            <ProductCard
               productid={product.productId}
               src={product.imageUrl || "https://via.placeholder.com/150"}
               alt={product.title}
@@ -75,4 +75,4 @@ const ElementPageLayout = ({ products }) => {
   );
 };
 
-export default ElementPageLayout;
+export default ProductList;
