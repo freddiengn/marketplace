@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, message, Typography, Row, Col, Select, Slider } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import ProductService from "../services/ProductService";
-import ElementPageLayout from "../components/ElementPageLayout";
+import ProductList from "../components/ProductList";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -64,7 +64,7 @@ const Home = () => {
   return (
     <div className="d-flex min-vh-100">
       <Title level={2} style={{ textAlign: "center", marginBottom: "20px" }}>
-        Product Showcase
+        Welcome to Owl Swap
       </Title>
 
       {/* Main Row with Left Filter and Right Product List */}
@@ -116,7 +116,7 @@ const Home = () => {
         <Col span={18}>
           {/* Product List */}
           {filteredProducts.length > 0 ? (
-            <ElementPageLayout
+            <ProductList
               products={filteredProducts.map((product) => ({
                 ...product,
                 price: formatCurrency(product.price),

@@ -6,7 +6,7 @@ import ProductService from "../services/ProductService";
 
 const { Title, Paragraph } = Typography;
 
-const PostDetails = () => {
+const PostDetailsPage = () => {
   const { productid } = useParams();
   const [product, setProduct] = useState(null); 
   const [loading, setLoading] = useState(true);
@@ -139,4 +139,4 @@ const PostDetails = () => {
   );
 };
 
-export default PostDetails;
+export default PostDetailsPage;

@@ -4,7 +4,7 @@ import { Card, Typography, Tag, Button } from "antd";
 
 const { Title, Text } = Typography;
 
-const ElementLayout = (props) => {
+const ProductCard = (props) => {
   const {
     productid,
     src,
@@ -58,8 +58,12 @@ const ElementLayout = (props) => {
           />
         </Link>
       }
-      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 0, 0, 0.2)")}
-      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.1)")}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 0, 0, 0.2)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.1)")
+      }
     >
       <Link
         to={`/post_details/${productid}`}
@@ -89,7 +93,14 @@ const ElementLayout = (props) => {
         >
           {price}
         </Text>
-        <Text style={{ color: "#777777", fontSize: "14px", display: "block", marginBottom: "8px" }}>
+        <Text
+          style={{
+            color: "#777777",
+            fontSize: "14px",
+            display: "block",
+            marginBottom: "8px",
+          }}
+        >
           Condition: {condition}
         </Text>
         <Tag
@@ -146,4 +157,4 @@ const ElementLayout = (props) => {
   );
 };
 
-export default ElementLayout;
+export default ProductCard;
