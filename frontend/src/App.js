@@ -3,26 +3,44 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home"; // Assuming you have a Home component
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Index from "./temp";
-import Post_Details from "./components/Post_Details";
+import PostDetails from "./components/PostDetails";
 import Welcome from "./pages/Welcome";
+import MainLayout from "./layouts/MainLayout";
 
 const App = () => {
   return (
     <Router>
-      <Header />
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Welcome />
+            </MainLayout>
+          }
+        />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <MainLayout>
+              <Home />
+            </MainLayout>
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/chats" element={<Index />} />
-        <Route path="/post_details/:productid" element={<Post_Details />} />
+        <Route
+          path="/post_details/:productid"
+          element={
+            <MainLayout>
+              <PostDetails />
+            </MainLayout>
+          }
+        />
         {/* Add more routes as needed */}
       </Routes>
-      <Footer />
     </Router>
   );
 };

@@ -3,7 +3,10 @@ import { signupUser, checkEmailExists, checkUserNameExists } from '../services/A
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { Button, Input, Card, Alert, Space, Typography } from 'antd';
 import SuccessModal from '../components/SuccessModal';
+
+const { Title, Text } = Typography;
 
 const Signup = () => {
     const [userName, setUserName] = useState('');
@@ -60,54 +63,86 @@ const Signup = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="365155987060-645o2sm1sehrspf4uqhq2gsuv8ie12j2.apps.googleusercontent.com">
-            <div className="container d-flex align-items-center justify-content-center min-vh-100">
-                <div className="card shadow p-4 w-100" style={{ maxWidth: '400px' }}>
-                    <h2 className="text-center mb-4">Sign Up</h2>
-                    
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
+                <Card style={{
+                    width: 400,
+                    padding: '24px',
+                    borderRadius: '8px',
+                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#ffffff',
+                    textAlign: 'center',
+                }} title={<Title level={3} style={{ color: '#000dff', fontWeight: 'bold', marginBottom: 24 }}>Sign Up</Title>}>
+
+                    {error && <Alert message={error} type="error" showIcon closable />}
+
                     {userEmail && (
-                        <div className="alert alert-warning">
-                            Current Email: <strong>{userEmail}</strong>
-                        </div>
+                        <Alert message={`Current Email: ${userEmail}`} type="warning" showIcon />
                     )}
 
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="userName" className="form-label">Username</label>
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                id="userName" 
-                                value={userName} 
-                                onChange={(e) => setUserName(e.target.value)} 
-                                required 
+                        <Space direction="vertical" style={{ width: '100%' }}>
+                            <Input
+                                placeholder="Username"
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                required
+                                style={{
+                                    height: '48px',
+                                    fontSize: '16px',
+                                    borderRadius: '8px',
+                                }}
                             />
-                        </div>
-                        <button 
-                            type="submit" 
-                            className="btn btn-primary w-100"
-                        >
-                            Complete Signup
-                        </button>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                block
+                                style={{
+                                    height: '48px',
+                                    fontSize: '16px',
+                                    fontWeight: 'bold',
+                                    background: '#4285F4',
+                                    borderColor: '#4285F4',
+                                    borderRadius: '8px',
+                                }}
+                            >
+                                Complete Signup
+                            </Button>
+                        </Space>
                     </form>
 
-                    <div className="text-center mt-4">
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
                         <GoogleLogin
                             onSuccess={handleGoogleSuccess}
                             onError={handleGoogleFailure}
-                            type="icon"
+                            render={(renderProps) => (
+                                <Button
+                                  type="primary"
+                                  block
+                                  onClick={renderProps.onClick}
+                                  disabled={renderProps.disabled}
+                                  style={{
+                                    height: "48px",
+                                    fontSize: "16px",
+                                    fontWeight: "bold",
+                                    background: "#4285F4",
+                                    borderColor: "#4285F4",
+                                    borderRadius: "8px",
+                                  }}
+                                >
+                                  Sign in with Google
+                                </Button>
+                              )}
                         />
                     </div>
 
-                    <p className="text-center mt-3">
-                        Already have an account? <Link to="/">Login</Link>
-                    </p>
-
-                    <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
-                </div>
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <Text>Already have an account? <Link to="/login" style={{ color: '#000dff', fontWeight: 'bold' }}>Login</Link></Text>
+                    </div>
+                </Card>
             </div>
+
+            <SuccessModal show={showModal} onHide={() => setShowModal(false)} message={message} />
         </GoogleOAuthProvider>
     );
 };

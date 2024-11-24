@@ -6,6 +6,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.dto.GoogleUserDto;
 import com.example.backend.dto.RegisterUserDto;
 import com.example.backend.response.UserResponse;
 import com.example.backend.service.AuthenticationService;
@@ -28,13 +31,13 @@ import java.util.Map;
 @RestController
 public class AuthenticationController {
 
-    @Autowired 
+    @Autowired
     private OAuth2Service oAuth2Service;
 
-    @Autowired 
+    @Autowired
     private AuthenticationService authenticationService;
 
-    @Autowired 
+    @Autowired
     private UserService userService;
 
     @PostMapping("/google")
@@ -57,12 +60,12 @@ public class AuthenticationController {
 
             // Create an HTTP-only cookie with the credential token
             ResponseCookie cookie = ResponseCookie.from("auth_token", credential)
-                .httpOnly(true)
-                .secure(true) // Use true if your app runs over HTTPS
-                .sameSite("Strict") // CSRF protection
-                .path("/") // Cookie is available across the whole app
-                .maxAge(24 * 60 * 60) // 1 day expiry
-                .build();
+                    .httpOnly(true)
+                    .secure(true) // Use true if your app runs over HTTPS
+                    .sameSite("Strict") // CSRF protection
+                    .path("/") // Cookie is available across the whole app
+                    .maxAge(24 * 60 * 60) // 1 day expiry
+                    .build();
 
             // Add the cookie to the response headers
             response.addHeader("Set-Cookie", cookie.toString());
@@ -81,34 +84,55 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeredUser);
     }
 
-    // Endpoint to check if email exists
+    @GetMapping("/google-info")
+    public ResponseEntity<GoogleUserDto> getGoogleUserInfo() {
+        try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication != null && authentication.isAuthenticated()) {
+
+                Object details = authentication.getDetails();
+
+                if (details instanceof GoogleUserDto) {
+                    GoogleUserDto googleUserInfo = (GoogleUserDto) details;
+
+                    return ResponseEntity.ok(googleUserInfo);
+                } else {
+                    return ResponseEntity.status(401).body(null);
+                }
+            } else {
+                return ResponseEntity.status(401).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
     @GetMapping("/check-email/{email}")
     public ResponseEntity<Boolean> emailExists(@PathVariable String email) {
         boolean exists = userService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
 
-    // Endpoint to check if username exists
     @GetMapping("/check-username/{username}")
     public ResponseEntity<Boolean> userNameExists(@PathVariable String username) {
         boolean exists = userService.checkUserNameExists(username);
         return ResponseEntity.ok(exists);
     }
+    
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("auth_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/")
+                .maxAge(0)
+                .build();
 
-    // Get the current user --temp
-    @GetMapping("/current-user")
-    public ResponseEntity<Map<String, Object>> getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();  
-            // You can return more user details if needed
-            Map<String, Object> userInfo = new HashMap<>();
-            userInfo.put("email", username);
-            // Add more user details if necessary (like roles, etc.)
-            return ResponseEntity.ok(userInfo);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        response.addHeader("Set-Cookie", cookie.toString());
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
     }
 }

@@ -16,6 +16,17 @@ export const signupUser = async (credential, userName) => {
   return response.data;
 };
 
+// Function to get Google user information
+export const getGoogleUserInfo = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/google-info`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching Google user info:", error);
+        throw error;
+    }
+};
+
 // Function to check if email exists
 export const checkEmailExists = async (email) => {
   const response = await axios.get(`${API_URL}/check-email/${email}`);
@@ -37,4 +48,15 @@ export const getCurrentUser = async () => {
     console.error("Error fetching current user", error);
     throw error; // Handle error appropriately (could show a notification, etc.)
   }
+};
+
+// Function to log out the user
+export const logout = async () => {
+    try {
+        const response = await axios.post(`${API_URL}/logout`);
+        return response.data; // This will be an empty response if the logout is successful
+    } catch (error) {
+        console.error("Error logging out:", error);
+        throw error;
+    }
 };
