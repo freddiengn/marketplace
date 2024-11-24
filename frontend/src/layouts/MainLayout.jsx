@@ -3,6 +3,7 @@ import { Layout, Breadcrumb } from "antd";
 import Header from "../components/Header"; 
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom"; 
+import { AuthProvider } from '../context/AuthContext';
 
 const { Content } = Layout;
 
@@ -21,6 +22,7 @@ const MainLayout = ({ children }) => {
   };
 
   return (
+    <AuthProvider>
     <Layout style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <Layout.Header style={{ padding: 0, background: "#001529" }}>
@@ -52,6 +54,7 @@ const MainLayout = ({ children }) => {
         <Footer />
       </Layout.Footer>
     </Layout>
+    </AuthProvider>
   );
 };
 

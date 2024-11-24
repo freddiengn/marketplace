@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, Dropdown, Avatar, Layout, Button } from "antd";
-import { UserOutlined, LogoutOutlined, SettingOutlined, MessageOutlined } from "@ant-design/icons";
-import { getGoogleUserInfo, logout } from "../services/AuthService";
+// components/Header.js
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, Dropdown, Avatar, Layout, Button } from 'antd';
+import { UserOutlined, LogoutOutlined, SettingOutlined, MessageOutlined } from '@ant-design/icons';
+import { AuthContext } from '../context/AuthContext';
 
 const { Header: AntHeader } = Layout;
 
 const Header = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [error, setError] = useState(false);
+  const { userInfo, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getGoogleUserInfo()
-      .then((data) => {
-        setUserInfo(data);
-        setError(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching user info:", error);
-        setError(true);
-      });
-  }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
-      setUserInfo(null);
       navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -52,7 +39,7 @@ const Header = () => {
     <AntHeader style={{ backgroundColor: "#001529", display: "flex", alignItems: "center", padding: "0 24px" }}>
       <Link to="/home" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "#fff" }}>
         <img
-          src="https://en-news.tuj.ac.jp/wp-content/uploads/2023/04/tuj_news_logo.png"
+          src="https://hcmiu.edu.vn/wp-content/uploads/2017/02/logoweb-02.png"
           alt="Logo"
           style={{ height: "40px", marginRight: "10px" }}
         />
