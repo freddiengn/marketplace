@@ -27,6 +27,14 @@ const ProductDetailsPage = () => {
     fetchProduct(); 
   }, [productid]);
 
+  // Format price to Vietnamese currency
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(value);
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -89,8 +97,8 @@ const ProductDetailsPage = () => {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Typography.Text strong style={{ fontSize: "18px" }}>
-                Price: {price} VNĐ
+              <Typography.Text strong style={{ fontSize: "18px", color: "#1890ff" }}>
+                Price: {formatCurrency(price)}
               </Typography.Text>
               <br />
               <Paragraph>{description}</Paragraph>
@@ -101,7 +109,13 @@ const ProductDetailsPage = () => {
               <br />
               <Typography.Text>Category: {category}</Typography.Text>
               <br />
-              <Typography.Text>{isSold ? "Status: Sold" : "Status: Available"}</Typography.Text>
+              <Typography.Text>
+                {isSold ? (
+                  <span style={{ color: "red", fontWeight: "bold" }}>Status: Sold</span>
+                ) : (
+                  <span style={{ color: "green", fontWeight: "bold" }}>Status: Available</span>
+                )}
+              </Typography.Text>
               <br />
               <Typography.Text>Created At: {new Date(createdAt).toLocaleDateString()}</Typography.Text>
               <br />
@@ -114,19 +128,37 @@ const ProductDetailsPage = () => {
 
               {/* Action Buttons */}
               <Space style={{ marginTop: "20px" }}>
-                <Button
-                  type="primary"
-                  icon={<ShoppingCartOutlined />}
-                  size="large"
-                  style={{ width: "150px" }}
-                >
-                  Buy
-                </Button>
+                {isSold ? (
+                  <Button
+                    type="primary"
+                    icon={<ShoppingCartOutlined />}
+                    size="large"
+                    style={{ width: "150px", backgroundColor: "#f5222d", color: "#fff", borderColor: "#f5222d" }}
+                    disabled
+                  >
+                    Buy
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    icon={<ShoppingCartOutlined />}
+                    size="large"
+                    style={{ width: "150px", backgroundColor: "green", borderColor: "#52c41a" }}
+                  >
+                    Buy
+                  </Button>
+                )}
+                
                 <Button
                   type="default"
                   icon={<MailOutlined />}
                   size="large"
-                  style={{ width: "180px" }}
+                  style={{
+                    width: "180px",
+                    backgroundColor: "#1890ff",
+                    color: "white",
+                    borderColor: "#1890ff",
+                  }}
                 >
                   Message for Seller
                 </Button>
