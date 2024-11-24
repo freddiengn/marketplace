@@ -18,11 +18,6 @@ const ElementLayout = (props) => {
     updatedAt,
   } = props;
 
-  // Format price as Vietnamese currency (VND)
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value);
-  };
-
   return (
     <Card
       hoverable
@@ -92,7 +87,7 @@ const ElementLayout = (props) => {
             marginBottom: "8px",
           }}
         >
-          {formatPrice(price)}
+          {price}
         </Text>
         <Text style={{ color: "#777777", fontSize: "14px", display: "block", marginBottom: "8px" }}>
           Condition: {condition}

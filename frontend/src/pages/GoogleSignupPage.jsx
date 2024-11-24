@@ -7,7 +7,7 @@ import { checkEmailExists } from "../services/AuthService";
 
 const { Title, Text } = Typography;
 
-const GoogleSignup = () => {
+const GoogleSignupPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -123,4 +123,4 @@ const GoogleSignup = () => {
   );
 };
 
-export default GoogleSignup;
+export default GoogleSignupPage;

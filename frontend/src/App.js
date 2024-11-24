@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home"; // Assuming you have a Home component
+import Home from "./pages/HomePage"; // Assuming you have a Home component
 import Login from "./pages/Login";
-import GoogleSignup from './pages/GoogleSignup';
+import GoogleSignupPage from './pages/GoogleSignupPage';
 import UsernameSignup from './pages/UsernameSignup';
 import Index from "./temp";
 import PostDetails from "./components/PostDetails";
@@ -21,7 +21,7 @@ const App = () => {
         <Route path="/product" element={<MainLayout><Product /></MainLayout>} />
         <Route path="/chats" element={<Index />} />
         <Route path="/post_details/:productid" element={<MainLayout><PostDetails /></MainLayout>} />
-        <Route path="/signup" element={<GoogleSignup />} />
+        <Route path="/signup" element={<GoogleSignupPage />} />
         <Route path="/signup/username" element={<UsernameSignup />} />
         {/* Add more routes as needed */}
       </Routes>
