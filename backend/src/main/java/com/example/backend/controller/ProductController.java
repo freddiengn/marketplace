@@ -63,4 +63,9 @@ public class ProductController {
         productService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/user")
+    public ResponseEntity<List<ProductResponse>> getProductsByCurrentUser() {
+        List<ProductResponse> products = productService.getProductsByCurrentUser();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 }

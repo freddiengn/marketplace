@@ -165,4 +165,27 @@ public class ProductService {
                 product.getUpdatedAt()
         );
     }
+    public List<ProductResponse> getProductsByCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+    
+        if (authentication != null && authentication.getPrincipal() != null) {
+            userEmail = (String) authentication.getPrincipal(); 
+        }
+    
+        if (userEmail == null) {
+            throw new RuntimeException("No authenticated user found.");
+        }
+    
+        User user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + userEmail);
+        }
+
+        List<Product> userProducts = productRepository.findByCreatedByUserId(user.getUserId());
+        return userProducts.stream()
+                .map(this::convertToProductResponse)
+                .collect(Collectors.toList());
+    }
+    
 }

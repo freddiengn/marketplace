@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Dropdown, Avatar, Layout, Button } from 'antd';
-import { UserOutlined, LogoutOutlined, SettingOutlined, MessageOutlined } from '@ant-design/icons';
+import { ProductOutlined, LogoutOutlined, MessageOutlined } from '@ant-design/icons';
 import { AuthContext } from '../context/AuthContext';
 
 const { Header: AntHeader } = Layout;
@@ -25,8 +25,8 @@ const Header = () => {
       <Menu.Item key="1" icon={<MessageOutlined />}>
         <Link to="/chats">Chats</Link>
       </Menu.Item>
-      <Menu.Item key="2" icon={<SettingOutlined />}>
-        Settings
+      <Menu.Item key="2" icon={<ProductOutlined />}>
+      <Link to="/product">My Product</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="3" icon={<LogoutOutlined />} onClick={handleLogout}>
