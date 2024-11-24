@@ -6,7 +6,7 @@ import { Card, Typography, Alert, Spin } from "antd";
 
 const { Title, Text } = Typography;
 
-const Login = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,7 +19,7 @@ const Login = () => {
     if (query.get("error")) {
       setError("Login failed. Please try again.");
     } else if (query.get("success")) {
-      navigate("/home");
+      navigate("/");
     }
   }, [location, navigate]);
 
@@ -31,7 +31,7 @@ const Login = () => {
       if (response.email) {
         setMessage("Login successful! Redirecting to home...");
         setError("");
-        setTimeout(() => navigate("/home"), 2000);
+        setTimeout(() => navigate("/"), 2000);
       } else {
         setError("Login failed. Please try again.");
       }
@@ -139,4 +139,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
