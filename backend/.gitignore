@@ -38,3 +38,6 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+
+#Ignore images folder
+src/main/resources/static/images/ 
