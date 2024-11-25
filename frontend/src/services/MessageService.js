@@ -4,54 +4,54 @@ import SockJS from "sockjs-client";
 class MessageService {
   constructor() {
     this.client = null;
-    this.connected = false;
   }
 
-  connect(username, onMessageReceived) {
+  connect() {
     this.client = new Client({
-      brokerURL: "http://localhost:8080/chat",
-      connectHeaders: {
-        username: username, // optionally send username for identification
+      brokerURL: "http://localhost:8080/chat", // Backend WebSocket URL
+      connectHeaders: {},
+      debug: (str) => {
+        console.log(str); // Optional: for debugging WebSocket connection
       },
-      reconnectDelay: 5000, // retry after 5 seconds if disconnected
-      webSocketFactory: () => new SockJS("http://localhost:8080/chat"), // WebSocket endpoint
       onConnect: () => {
-        this.connected = true;
-        console.log("WebSocket Connected");
-        this.subscribeToMessages(onMessageReceived); // Subscribe to the messages after connection
+        console.log("WebSocket connected!");
+        this.subscribeToMessages();
+      },
+      onWebSocketError: (error) => {
+        console.log("WebSocket Error: ", error);
       },
       onDisconnect: () => {
-        this.connected = false;
-        console.log("WebSocket Disconnected");
+        console.log("Disconnected from WebSocket");
       },
+      reconnectDelay: 5000, // Optionally configure reconnect delay
+      heartbeatIncoming: 4000, // Optional: heartbeat configurations
+      heartbeatOutgoing: 4000,
     });
-    this.client.activate(); // Activate the WebSocket connection
+
+    this.client.activate();
   }
 
-  // Subscribe to the message channel
-  subscribeToMessages(onMessageReceived) {
+  subscribeToMessages() {
+    // Subscribe to a topic that you're interested in
     this.client.subscribe("/topic/messages", (message) => {
-      // Trigger the callback to handle the incoming message
-      const messageBody = JSON.parse(message.body);
-      onMessageReceived(messageBody);
+      console.log("Received message: ", message.body);
+      // Handle received message
     });
   }
 
   sendMessage(destination, message) {
-    if (this.connected) {
-      // Send a message to the specified destination
-      this.client.publish({
-        destination: destination,
-        body: JSON.stringify(message),
-      });
+    if (this.client && this.client.connected) {
+      this.client.send(destination, {}, JSON.stringify(message));
+      console.log("Sent message: ", message);
     } else {
-      console.log("Not connected to WebSocket");
+      console.log("WebSocket client not connected.");
     }
   }
 
   disconnect() {
     if (this.client) {
       this.client.deactivate();
+      console.log("Disconnected from WebSocket");
     }
   }
 }

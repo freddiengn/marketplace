@@ -27,7 +27,7 @@ const Header = () => {
   const menu = (
     <Menu>
       <Menu.Item key="1" icon={<MessageOutlined />}>
-        <Link to="/chats">Chats</Link>
+        <Link to="/chat">Chats</Link>
       </Menu.Item>
       <Menu.Item key="2" icon={<ProductOutlined />}>
         <Link to="/product">My Product</Link>

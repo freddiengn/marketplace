@@ -3,10 +3,12 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { handleGoogleLogin } from "../services/AuthService";
 import { Card, Typography, Alert, Spin } from "antd";
+import { useUser } from "../context/userContext";
 
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
+  const { setUser } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,6 +31,7 @@ const LoginPage = () => {
       setLoading(true); // Show loading spinner while processing
       const response = await handleGoogleLogin(credential);
       if (response.email) {
+        setUser(response);
         setMessage("Login successful! Redirecting to home...");
         setError("");
         setTimeout(() => navigate("/"), 2000);
