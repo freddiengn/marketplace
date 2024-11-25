@@ -25,6 +25,6 @@ public class MessageModel {
 
     public String toString()
     {
-        return "MessageModel{" + '\n' + "message: " + message + '\n' + "fromLogin: " + fromLogin + '\n' + "]";
+        return "MessageModel{" + '\n' + "message: " + message + '\n' + "fromLogin: " + fromLogin + '\n' + "}";
     }
 }

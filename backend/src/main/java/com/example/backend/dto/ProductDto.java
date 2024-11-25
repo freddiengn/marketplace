@@ -14,6 +14,5 @@ public class ProductDto {
     private Double price;
     private String details;
     private String condition;
-
     private MultipartFile image;  
 }

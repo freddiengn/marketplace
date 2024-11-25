@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.GoogleUserDto;
 import com.example.backend.dto.RegisterUserDto;
+import com.example.backend.response.ProductResponse;
 import com.example.backend.response.UserResponse;
 import com.example.backend.service.AuthenticationService;
 import com.example.backend.service.OAuth2Service;
@@ -134,5 +135,13 @@ public class AuthenticationController {
         response.addHeader("Set-Cookie", cookie.toString());
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().build();
+    }
+
+
+    // This is a method to get the user based on their id.
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String userId) {
+        UserResponse user = userService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
