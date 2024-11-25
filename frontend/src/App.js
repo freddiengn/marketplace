@@ -5,7 +5,7 @@ import Home from "./pages/HomePage"; // Assuming you have a Home component
 import LoginPage from "./pages/LoginPage";
 import GoogleSignupPage from "./pages/GoogleSignupPage";
 import UsernameSignupPage from "./pages/UsernameSignupPage";
-import Chat from "./temp";
+// import Chat from "./temp";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import MainLayout from "./layouts/MainLayout";
 import ProductPage from "./pages/ProductPage";
@@ -31,7 +31,7 @@ const App = () => {
             </MainLayout>
           }
         />
-        <Route path="/chats" element={<Chat />} />
+        {/* <Route path="/chats" element={<Chat />} /> */}
         <Route
           path="/product-details/:productid"
           element={
