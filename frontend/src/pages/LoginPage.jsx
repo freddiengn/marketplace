@@ -2,41 +2,43 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { handleGoogleLogin } from "../services/AuthService";
-import { Card, Typography, Alert, Button } from "antd";
+import { Card, Typography, Alert, Spin } from "antd";
 
 const { Title, Text } = Typography;
 
-const Login = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     if (query.get("error")) {
       setError("Login failed. Please try again.");
     } else if (query.get("success")) {
-      navigate("/home");
+      navigate("/");
     }
   }, [location, navigate]);
 
   const handleGoogleSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
     try {
+      setLoading(true); // Show loading spinner while processing
       const response = await handleGoogleLogin(credential);
       if (response.email) {
         setMessage("Login successful! Redirecting to home...");
-        setShowModal(true);
-        setTimeout(() => {
-          navigate("/home");
-        }, 2000);
+        setError("");
+        setTimeout(() => navigate("/"), 2000);
       } else {
         setError("Login failed. Please try again.");
       }
     } catch (error) {
       setError(error.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,64 +51,67 @@ const Login = () => {
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <div
         style={{
-          minHeight: "100vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f0f2f5",
         }}
       >
         <Card
           style={{
-            maxWidth: 400,
-            width: "100%",
-            padding: "32px",
-            borderRadius: "16px",
+            width: 500,
+            padding: "24px",
+            borderRadius: "8px",
             boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
-            textAlign: "center",
             backgroundColor: "#ffffff",
+            textAlign: "center",
           }}
+          title={
+            <Title
+              level={3}
+              style={{
+                color: "#000dff",
+                fontWeight: "bold",
+                marginBottom: 24,
+              }}
+            >
+              Welcome Back
+            </Title>
+          }
         >
-          <Title
-            level={2}
-            style={{ color: "#000dff", fontWeight: "bold", marginBottom: 24 }}
-          >
-            Welcome Back
-          </Title>
-
+          {/* Error Alert with Close Button */}
           {error && (
             <Alert
               message={error}
               type="error"
               showIcon
-              style={{
-                marginBottom: 16,
-                borderRadius: "8px",
-              }}
+              style={{ marginBottom: 16 }}
+              closable
+              onClose={() => setError("")}
             />
           )}
 
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleFailure}
-            render={(renderProps) => (
-              <Button
-                type="primary"
-                block
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-                style={{
-                  height: "48px",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  background: "#4285F4",
-                  borderColor: "#4285F4",
-                  borderRadius: "8px",
-                }}
-              >
-                Sign in with Google
-              </Button>
-            )}
-          />
+          {/* Success Message Alert */}
+          {message && (
+            <Alert
+              message={message}
+              type="success"
+              showIcon
+              style={{ marginBottom: 16 }}
+            />
+          )}
+
+          {/* Google Login Button */}
+          {loading ? (
+            <Spin tip="Logging in..." size="large" />
+          ) : (
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleFailure}
+              type="icon"
+            />
+          )}
 
           <Text
             style={{
@@ -134,4 +139,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

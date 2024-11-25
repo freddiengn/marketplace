@@ -4,7 +4,7 @@ import { Card, Typography, Tag, Button } from "antd";
 
 const { Title, Text } = Typography;
 
-const ElementLayout = (props) => {
+const ProductCard = (props) => {
   const {
     productid,
     src,
@@ -16,12 +16,8 @@ const ElementLayout = (props) => {
     category,
     createdAt,
     updatedAt,
+    isSold, // new prop to indicate if the product is sold
   } = props;
-
-  // Format price as Vietnamese currency (VND)
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value);
-  };
 
   return (
     <Card
@@ -30,13 +26,15 @@ const ElementLayout = (props) => {
       style={{
         borderRadius: "12px",
         overflow: "hidden",
-        backgroundColor: "#ffffff",
-        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+        backgroundColor: isSold ? "#f0f0f0" : "#ffffff", // Change background color if sold
+        boxShadow: isSold
+          ? "0 8px 16px rgba(0, 0, 0, 0.1)"
+          : "0 8px 16px rgba(0, 0, 0, 0.1)", // Optional shadow change
         transition: "transform 0.3s, box-shadow 0.3s",
       }}
       cover={
         <Link
-          to={`/post_details/${productid}`}
+          to={`/product-details/${productid}`}
           state={{
             title,
             src,
@@ -63,11 +61,15 @@ const ElementLayout = (props) => {
           />
         </Link>
       }
-      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 0, 0, 0.2)")}
-      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.1)")}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 0, 0, 0.2)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0, 0, 0, 0.1)")
+      }
     >
       <Link
-        to={`/post_details/${productid}`}
+        to={`/product-details/${productid}`}
         state={{
           title,
           src,
@@ -85,16 +87,23 @@ const ElementLayout = (props) => {
         </Title>
         <Text
           style={{
-            color: "#e60023",
+            color: isSold ? "#cccccc" : "#e60023", // Grey color for sold items
             fontWeight: "bold",
             fontSize: "16px",
             display: "block",
             marginBottom: "8px",
           }}
         >
-          {formatPrice(price)}
+          {price}
         </Text>
-        <Text style={{ color: "#777777", fontSize: "14px", display: "block", marginBottom: "8px" }}>
+        <Text
+          style={{
+            color: "#777777",
+            fontSize: "14px",
+            display: "block",
+            marginBottom: "8px",
+          }}
+        >
           Condition: {condition}
         </Text>
         <Tag
@@ -118,7 +127,7 @@ const ElementLayout = (props) => {
 
       {/* View Details Button */}
       <Link
-        to={`/post_details/${productid}`}
+        to={`/product-details/${productid}`}
         state={{
           title,
           src,
@@ -140,15 +149,22 @@ const ElementLayout = (props) => {
             fontSize: "16px",
             borderRadius: "8px",
             transition: "background-color 0.3s",
+            backgroundColor: isSold ? "#cccccc" : "#1890ff", // Disable button if sold
+            cursor: isSold ? "not-allowed" : "pointer",
           }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#004085")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#1890ff")}
+          disabled={isSold} // Disable button for sold products
+          onMouseOver={(e) =>
+            !isSold && (e.target.style.backgroundColor = "#004085")
+          }
+          onMouseOut={(e) =>
+            !isSold && (e.target.style.backgroundColor = "#1890ff")
+          }
         >
-          View details
+          {isSold ? "Sold" : "View details"}
         </Button>
       </Link>
     </Card>
   );
 };
 
-export default ElementLayout;
+export default ProductCard;

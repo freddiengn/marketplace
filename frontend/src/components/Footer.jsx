@@ -1,13 +1,26 @@
+// components/Footer.jsx
 import React from "react";
 import { Layout, Row, Col, Typography, Input, Button } from "antd";
-import { FacebookOutlined, TwitterOutlined, InstagramOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import {
+  FacebookOutlined,
+  TwitterOutlined,
+  InstagramOutlined,
+  MailOutlined,
+  PhoneOutlined,
+} from "@ant-design/icons";
 
 const { Footer: AntFooter } = Layout;
 const { Title, Text } = Typography;
 
 const Footer = () => {
   return (
-    <AntFooter style={{ backgroundColor: "#001529", color: "#fff", padding: "40px 20px" }}>
+    <AntFooter
+      style={{
+        backgroundColor: "#001529",
+        color: "#fff",
+        padding: "40px 20px",
+      }}
+    >
       <Row gutter={[16, 16]} justify="center">
         {/* About Section */}
         <Col xs={24} sm={12} md={6}>
@@ -15,7 +28,10 @@ const Footer = () => {
             About Us
           </Title>
           <Text style={{ color: "#fff" }}>
-            Welcome to Owl Swap, your trusted platform for selling
+            Welcome to Owl Swap, your trusted platform for connecting,
+            exchanging, and learning. Our mission is to create a
+            community-driven space where users can collaborate and share
+            seamlessly.
           </Text>
         </Col>
 
@@ -26,7 +42,7 @@ const Footer = () => {
           </Title>
           <ul style={{ listStyleType: "none", padding: 0 }}>
             <li>
-              <a href="/home" style={{ color: "#fff" }}>
+              <a href="/" style={{ color: "#fff" }}>
                 Home
               </a>
             </li>
@@ -59,9 +75,7 @@ const Footer = () => {
           <p>
             <PhoneOutlined /> +1 (800) 555-1234
           </p>
-          <p>
-            123 Owl Street, San Francisco, CA
-          </p>
+          <p>123 Owl Street, San Francisco, CA</p>
         </Col>
 
         {/* Newsletter Subscription */}
@@ -83,13 +97,29 @@ const Footer = () => {
       {/* Social Media Links */}
       <Row justify="center" style={{ marginTop: "40px", textAlign: "center" }}>
         <Col>
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-            <FacebookOutlined style={{ fontSize: "24px", color: "#fff", marginRight: "10px" }} />
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FacebookOutlined
+              style={{ fontSize: "24px", color: "#fff", marginRight: "10px" }}
+            />
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-            <TwitterOutlined style={{ fontSize: "24px", color: "#fff", marginRight: "10px" }} />
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <TwitterOutlined
+              style={{ fontSize: "24px", color: "#fff", marginRight: "10px" }}
+            />
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <InstagramOutlined style={{ fontSize: "24px", color: "#fff" }} />
           </a>
         </Col>
@@ -98,7 +128,9 @@ const Footer = () => {
       {/* Copyright Section */}
       <Row justify="center" style={{ marginTop: "20px" }}>
         <Col>
-          <Text style={{ color: "#fff" }}>© 2024 Owl Swap. All rights reserved.</Text>
+          <Text style={{ color: "#fff" }}>
+            © 2024 Owl Swap. All rights reserved.
+          </Text>
         </Col>
       </Row>
     </AntFooter>
