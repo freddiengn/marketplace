@@ -19,6 +19,12 @@ const GoogleSignupPage = () => {
       const decoded = jwtDecode(credential);
       const email = decoded.email;
 
+    
+    if (!email.endsWith("@temple.edu")) {
+      setError("Only @temple.edu email addresses can register.");
+      return;
+    }
+
       // Check if the email already exists in the database
       const emailExists = await checkEmailExists(email);
 
