@@ -62,7 +62,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 googleUserDto.setNbf((Long) userInfo.get("nbf"));
                 googleUserDto.setPicture((String) userInfo.get("picture"));
                 googleUserDto.setSub((String) userInfo.get("sub"));
-
+                googleUserDto.setUsername((String) userInfo.get("username"));
                 // Create an authentication token using the email and googleUserDto
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         googleUserDto.getEmail(), null, List.of());
