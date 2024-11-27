@@ -2,7 +2,6 @@ package com.example.backend.response;
 
 import java.util.Date;
 
-import com.example.backend.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageResponse {
-    private Long chat_Id;
-    private String message;
-    private Date createdAt;
-    private Date updatedAt;
-    private User receiver;
-    private User sender;
+    private Long chat_Id; // The unique Id for the chat message
+    private String message; // The actual message
+    private Date createdAt; // Just for data purposes
+    private Date updatedAt; // Just for data purposes
+    private String receiver; // To find the receiving end
+    private String sender; // To find the sender
 }

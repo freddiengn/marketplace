@@ -1,62 +1,44 @@
 import React, { useEffect, useState } from "react";
-import WebSocketService from "../services/MessageService"; // Your WebSocket service
-import { useUser } from "../context/userContext"; // Context for user info
+import MessageService from "../services/MessageService";
+// If you are using Ant Design for the error message, import it like this:
+// import { message } from 'antd';
 
 const Chat = () => {
-  const { user } = useUser();
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-
-  const onMessageReceived = (newMessage) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  };
+  const [messages, setMessages] = useState([]); // Use state to store messages
+  const [loading, setLoading] = useState(true); // To handle loading state
+  const [error, setError] = useState(null); // To handle error state
 
   useEffect(() => {
-    if (user) {
-      WebSocketService.connect(user.username, onMessageReceived);
-    }
-    return () => {
-      WebSocketService.disconnect();
+    const fetchMessages = async () => {
+      try {
+        const response = await MessageService.currentUserChats();
+        setMessages(response); // Store messages in the state
+        setLoading(false); // Set loading to false when done
+      } catch (error) {
+        setError("Failed to fetch chats."); // Handle error
+        setLoading(false); // Set loading to false on error
+      }
     };
-  }, [user]);
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      const messageData = {
-        message,
-        sender: user,
-        receiver: "otherUser", // This would be dynamic based on the chat
-      };
-      WebSocketService.sendMessage(`/app/chat/send/otherUser`, messageData); // Update `otherUser` dynamically
-      setMessage(""); // Clear the input field
-    }
-  };
+    fetchMessages();
+  }, []); // Empty dependency array to run the effect once on mount
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
+
+  if (error) {
+    return <div>{error}</div>; // Show error if something goes wrong
+  }
 
   return (
-    <div className="chat-container">
-      <div className="messages">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={
-              msg.sender.username === user.username
-                ? "my-message"
-                : "other-message"
-            }
-          >
-            <strong>{msg.sender.username}: </strong>
-            {msg.message}
-          </div>
-        ))}
-      </div>
-      <div className="send-message">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message..."
-        />
-        <button onClick={handleSendMessage}>Send</button>
+    <div>
+      <div>
+        <ul>
+          {messages.map((message, index) => (
+            <li key={index}>{message.receiver}</li> // Use a key for each list item
+          ))}
+        </ul>
       </div>
     </div>
   );

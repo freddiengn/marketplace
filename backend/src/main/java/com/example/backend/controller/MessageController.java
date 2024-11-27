@@ -1,38 +1,51 @@
 package com.example.backend.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.entity.Message;
+import com.example.backend.response.MessageResponse;
+import com.example.backend.service.MessageService;
 import com.example.backend.dto.MessageDto;
+import com.example.backend.entity.Message;
 
 @RestController
 public class MessageController {
+    private final MessageService messageService;
     
+    public MessageController(MessageService messageService)
+    {
+        this.messageService = messageService;
+    }
+
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/chat/send/{to}")  // Sending message to 'to'
-    public void sendMessage(@DestinationVariable String to, MessageDto messageDto) {
-        System.out.println("Sending message: " + messageDto.getMessage() + " to: " + to);
-        // Convert DTO to Message entity if necessary, or use DTO for sending
-        Message message = new Message();
-        message.setMessage(messageDto.getMessage());
-        message.setSender(messageDto.getSender());
-        message.setReceiver(messageDto.getReceiver());
-        message.setCreatedAt(new Date());
-        message.setUpdatedAt(new Date());
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
+    @MessageMapping("/chat/send/{userName}")  //We use this method to send a message to the userName 
+    public void sendMessage(@DestinationVariable String userName, MessageDto messageDto) {        
+        MessageResponse message = messageService.createMessage(messageDto);
+        simpMessagingTemplate.convertAndSend("/topic/messages/" + userName, message);
     }
 
-    @MessageMapping("/chat/receive/{from}")  // Receiving message from 'from'
-    public void receiveMessage(@DestinationVariable String from, Message message) {
-        System.out.println("Received message: " + message.getMessage() + " from: " + from);
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + from, message);
+    @MessageMapping("/chat/receive/{userName}")  // Receiving message from 
+    public void receiveMessage(@DestinationVariable String userName, Message message) {
+        simpMessagingTemplate.convertAndSend("/topic/messages/" + userName, message);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<MessageResponse>> getAllChats()
+    {
+        List<MessageResponse> messages = messageService.getCurrentUsersChats();
+        return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 }

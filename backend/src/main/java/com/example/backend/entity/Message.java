@@ -47,12 +47,12 @@ public class Message {
     private Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "sender", referencedColumnName = "user_Id", nullable = false)
     private User sender; // Used to find the sender of the message
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id", referencedColumnName = "user_id", nullable = false)
-    private User receiver; // USed to find the receiver of the message
+    @JoinColumn(name = "receiver", referencedColumnName = "user_Id", nullable = false)
+    private User receiver; // Used to find the receiver of the message
 
     @PrePersist
     protected void onCreate() {

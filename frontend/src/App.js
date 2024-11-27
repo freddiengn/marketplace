@@ -44,6 +44,7 @@ const App = () => {
           <Route path="/signup" element={<GoogleSignupPage />} />
           <Route path="/signup/username" element={<UsernameSignupPage />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/send/:userName" element={<Chat />} />
           {/* Add more routes as needed */}
         </Routes>
       </Router>

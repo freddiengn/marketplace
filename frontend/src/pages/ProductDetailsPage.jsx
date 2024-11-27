@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Row, Col, Button, Card, Typography, Space, Spin } from "antd";
 import { MailOutlined, ShoppingCartOutlined } from "@ant-design/icons";
@@ -8,30 +9,30 @@ const { Title, Paragraph } = Typography;
 
 const ProductDetailsPage = () => {
   const { productid } = useParams();
-  const [product, setProduct] = useState(null); 
+  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const fetchedProduct = await ProductService.getProductById(productid); 
-        setProduct(fetchedProduct); 
+        const fetchedProduct = await ProductService.getProductById(productid);
+        setProduct(fetchedProduct);
         setLoading(false);
       } catch (err) {
-        setError("Failed to load product details."); 
+        setError("Failed to load product details.");
         setLoading(false);
       }
     };
 
-    fetchProduct(); 
+    fetchProduct();
   }, [productid]);
 
   // Format price to Vietnamese currency
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(value);
   };
 
@@ -80,7 +81,12 @@ const ProductDetailsPage = () => {
             {/* Product Image */}
             <Card
               hoverable
-              cover={<img alt={title} src={imageUrl || "https://via.placeholder.com/150"} />}
+              cover={
+                <img
+                  alt={title}
+                  src={imageUrl || "https://via.placeholder.com/150"}
+                />
+              }
               style={{
                 borderRadius: "8px",
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -97,13 +103,16 @@ const ProductDetailsPage = () => {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Typography.Text strong style={{ fontSize: "18px", color: "#1890ff" }}>
+              <Typography.Text
+                strong
+                style={{ fontSize: "18px", color: "#1890ff" }}
+              >
                 Price: {formatCurrency(price)}
               </Typography.Text>
               <br />
               <Paragraph>{description}</Paragraph>
               <br />
-              
+
               {/* Additional Product Information */}
               <Typography.Text>Condition: {condition}</Typography.Text>
               <br />
@@ -111,15 +120,23 @@ const ProductDetailsPage = () => {
               <br />
               <Typography.Text>
                 {isSold ? (
-                  <span style={{ color: "red", fontWeight: "bold" }}>Status: Sold</span>
+                  <span style={{ color: "red", fontWeight: "bold" }}>
+                    Status: Sold
+                  </span>
                 ) : (
-                  <span style={{ color: "green", fontWeight: "bold" }}>Status: Available</span>
+                  <span style={{ color: "green", fontWeight: "bold" }}>
+                    Status: Available
+                  </span>
                 )}
               </Typography.Text>
               <br />
-              <Typography.Text>Created At: {new Date(createdAt).toLocaleDateString()}</Typography.Text>
+              <Typography.Text>
+                Created At: {new Date(createdAt).toLocaleDateString()}
+              </Typography.Text>
               <br />
-              <Typography.Text>Updated At: {new Date(updatedAt).toLocaleDateString()}</Typography.Text>
+              <Typography.Text>
+                Updated At: {new Date(updatedAt).toLocaleDateString()}
+              </Typography.Text>
               <br />
 
               {/* Seller Information */}
@@ -133,7 +150,12 @@ const ProductDetailsPage = () => {
                     type="primary"
                     icon={<ShoppingCartOutlined />}
                     size="large"
-                    style={{ width: "150px", backgroundColor: "#f5222d", color: "#fff", borderColor: "#f5222d" }}
+                    style={{
+                      width: "150px",
+                      backgroundColor: "#f5222d",
+                      color: "#fff",
+                      borderColor: "#f5222d",
+                    }}
                     disabled
                   >
                     Buy
@@ -143,25 +165,31 @@ const ProductDetailsPage = () => {
                     type="primary"
                     icon={<ShoppingCartOutlined />}
                     size="large"
-                    style={{ width: "150px", backgroundColor: "green", borderColor: "#52c41a" }}
+                    style={{
+                      width: "150px",
+                      backgroundColor: "green",
+                      borderColor: "#52c41a",
+                    }}
                   >
                     Buy
                   </Button>
                 )}
-                
-                <Button
-                  type="default"
-                  icon={<MailOutlined />}
-                  size="large"
-                  style={{
-                    width: "180px",
-                    backgroundColor: "#1890ff",
-                    color: "white",
-                    borderColor: "#1890ff",
-                  }}
-                >
-                  Message for Seller
-                </Button>
+
+                <Link to={`/chat/send/${seller}`}>
+                  <Button
+                    type="default"
+                    icon={<MailOutlined />}
+                    size="large"
+                    style={{
+                      width: "180px",
+                      backgroundColor: "#1890ff",
+                      color: "white",
+                      borderColor: "#1890ff",
+                    }}
+                  >
+                    Message for Seller
+                  </Button>
+                </Link>
               </Space>
             </Card>
           </Col>
