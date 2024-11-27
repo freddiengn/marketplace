@@ -2,7 +2,6 @@ package com.example.backend.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -55,7 +54,6 @@ public class MessageService {
         );
     }
 
-
     public MessageResponse createMessage (MessageDto messageDto)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -76,7 +74,7 @@ public class MessageService {
         Message message = new Message();
         message.setMessage(messageDto.getMessage());//ProductResponse createdProduct = productService.createProduct(productDto);
         message.setSender(user);
-        message.setReceiver(user);//userService.getUserByUserName(messageDto.getReceiver()) // I need to know the function that the user entity has that can get the user From the user name
+        message.setReceiver(userRepository.findByUserId(messageDto.getReceiver()));
         message.setCreatedAt(new Date());
         message.setUpdatedAt(new Date());
 

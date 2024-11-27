@@ -9,6 +9,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import MainLayout from "./layouts/MainLayout";
 import ProductPage from "./pages/ProductPage";
 import Chat from "./pages/Chat";
+import ChatInterface from "./components/ChatInterface";
 import { UserProvider } from "./context/userContext";
 
 const App = () => {
@@ -44,7 +45,7 @@ const App = () => {
           <Route path="/signup" element={<GoogleSignupPage />} />
           <Route path="/signup/username" element={<UsernameSignupPage />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/chat/send/:userName" element={<Chat />} />
+          <Route path="/chat/send/:userName" element={<ChatInterface />} />
           {/* Add more routes as needed */}
         </Routes>
       </Router>

@@ -1,38 +1,26 @@
 package com.example.backend.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
 @EnableWebSocketMessageBroker
-@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
-  @Value("${frontend.caller.host:http://localhost:3000}")
-  private String frontendCallerHost;
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws/chat")  // This is where the WebSocket connects
+                .setAllowedOrigins("*")  // Allow all origins or specify your domain
+                .withSockJS();  // Enable SockJS fallback options
+    }
 
-  @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry
-        .addEndpoint("/chat").setAllowedOrigins("*").withSockJS();
-  }
-
-  @Override
-  public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry
-        .setApplicationDestinationPrefixes("/app")
-        .enableSimpleBroker( "/topic");
-  }
-
-  @Bean
-  public TaskScheduler heartBeatScheduler() {
-    return new ThreadPoolTaskScheduler();
-  }
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");  // Subscribe to messages at "/topic"
+        config.setApplicationDestinationPrefixes("/app");  // Mapping for sending messages
+    }
 }
