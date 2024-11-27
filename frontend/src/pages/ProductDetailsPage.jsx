@@ -65,7 +65,7 @@ const ProductDetailsPage = () => {
 
   // Format price in Vietnamese currency
   const formatCurrency = (value) =>
-    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value);
+    new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY" }).format(value);
 
   // Handle sending message to the seller
   const handleSendMessage = async () => {
