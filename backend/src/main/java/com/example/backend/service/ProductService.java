@@ -169,6 +169,7 @@ public class ProductService {
                 product.getIsSold(),
                 product.getCreatedAt(),
                 product.getUpdatedAt(),
+                product.getCreatedBy().getUserId(),
                 product.getCreatedBy().getUserName()
         );
     }
