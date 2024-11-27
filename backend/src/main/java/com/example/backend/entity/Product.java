@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -53,6 +54,9 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Message> messages;
 
     @PrePersist
     protected void onCreate() {
