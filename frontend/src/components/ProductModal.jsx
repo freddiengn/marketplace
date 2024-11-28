@@ -110,7 +110,8 @@ const ProductModal = ({
           </Col>
 
           <Col span={24}>
-            <Form.Item label="Product Image" name="image">
+            <Form.Item label="Product Image" name="image" 
+            rules = {[{ required: true, message: "Please input the image!"}]}>
               {isEditing && currentProduct?.image && (
                 <div>
                   <img
