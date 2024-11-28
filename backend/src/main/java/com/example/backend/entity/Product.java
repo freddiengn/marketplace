@@ -36,7 +36,6 @@ public class Product {
     @Column(name = "product_condition", nullable = false, length = 50)
     private String condition;
 
-    // Changed to store a single image URL
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 

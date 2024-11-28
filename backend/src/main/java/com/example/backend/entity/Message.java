@@ -28,7 +28,6 @@ public class Message {
     @JoinColumn(name = "recipient_id", referencedColumnName = "user_id", insertable = true, updatable = true)
     private User receiver;
 
-    // New relationship with Product entity
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = true, updatable = true)
     private Product product;

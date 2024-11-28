@@ -16,18 +16,16 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    // Endpoint to send a message
     @PostMapping("/send")
     public ResponseEntity<MessageResponse> sendMessage(@RequestBody MessageDto messageDto) {
         try {
             MessageResponse response = messageService.sendMessage(messageDto);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null); // Return bad request if an error occurs
+            return ResponseEntity.badRequest().body(null); 
         }
     }
 
-    // Endpoint to get chat history for a buyer (user) based on productId
     @GetMapping("/history/buyer")
     public ResponseEntity<List<MessageResponse>> getChatHistoryForBuyer(
             @RequestParam Long productId) {
@@ -35,11 +33,10 @@ public class MessageController {
             List<MessageResponse> chatHistory = messageService.getChatHistoryForBuyer(productId);
             return ResponseEntity.ok(chatHistory);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null); // Return bad request if an error occurs
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    // Endpoint to get chat history for a seller (user) based on productId and senderId
     @GetMapping("/history/seller")
     public ResponseEntity<List<MessageResponse>> getChatHistoryForSeller(
             @RequestParam Long productId, 
@@ -48,18 +45,17 @@ public class MessageController {
             List<MessageResponse> chatHistory = messageService.getChatHistoryForSeller(productId, senderId);
             return ResponseEntity.ok(chatHistory);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null); // Return bad request if an error occurs
+            return ResponseEntity.badRequest().body(null); 
         }
     }
 
-    // Endpoint to get senders for a specific product based on productId
     @GetMapping("/senders")
     public ResponseEntity<List<MessageResponse>> getSendersForProduct(@RequestParam Long productId) {
         try {
             List<MessageResponse> senders = messageService.getSendersForProduct(productId);
             return ResponseEntity.ok(senders);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null); // Return bad request if an error occurs
+            return ResponseEntity.badRequest().body(null); 
         }
     }
 }

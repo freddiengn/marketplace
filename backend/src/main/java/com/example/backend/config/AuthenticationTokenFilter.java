@@ -43,7 +43,6 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                // Decode the token and create googleUserDto object
                 Map<String, Object> userInfo = oAuth2Service.decode(token);
         
                 // Map decoded information to googleUserDto
@@ -71,7 +70,6 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 ((AbstractAuthenticationToken) authentication).setDetails(googleUserDto);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                // Handle invalid token or authentication failure
                 SecurityContextHolder.clearContext();
             }
         }
