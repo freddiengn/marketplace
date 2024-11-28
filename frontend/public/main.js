@@ -58,12 +58,12 @@ function onError(error) {
 function sendMessage(event) {
   var messageContent = messageInput.value.trim();
   if (messageContent && stompClient) {
-    var chatMessage = {
+    var message = {
       sender: username,
       content: messageInput.value,
       type: "CHAT",
     };
-    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(message));
     messageInput.value = "";
   }
   event.preventDefault();

@@ -26,7 +26,7 @@ const LoginPage = () => {
   const handleGoogleSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;
     try {
-      setLoading(true); // Show loading spinner while processing
+      setLoading(true); 
       const response = await handleGoogleLogin(credential);
       if (response.email) {
         setMessage("Login successful! Redirecting to home...");

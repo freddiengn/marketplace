@@ -39,7 +39,6 @@ public class SecurityConfiguration {
                 .authenticated()
                 .and();
 
-        // Register the custom filter before the UsernamePasswordAuthenticationFilter
         http.addFilterBefore(new AuthenticationTokenFilter(oAuth2Service), 
                              UsernamePasswordAuthenticationFilter.class);
 

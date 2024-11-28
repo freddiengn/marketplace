@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-    // Exception handling methods
     private HttpStatus determineHttpStatus(Exception exception) {
         if (exception instanceof BadCredentialsException) {
             return HttpStatus.UNAUTHORIZED;

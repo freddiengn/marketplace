@@ -22,4 +22,5 @@ public class GoogleUserDto {
     private long nbf;
     private String picture;
     private String sub;
+    private String username;
 }

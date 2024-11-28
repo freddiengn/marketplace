@@ -20,5 +20,6 @@ public class ProductResponse {
     private Boolean isSold;
     private Date createdAt;
     private Date updatedAt;
+    private String sellerId;
     private String seller;
 }
