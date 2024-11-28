@@ -47,17 +47,14 @@ public class MessageService {
             throw new RuntimeException("User not found with email: " + userEmail);
         }
 
-        // Retrieve the receiver user based on receiverId
         User receiver = userRepository.findByUserId(messageDto.getReceiverId());
         if (receiver == null) {
             throw new RuntimeException("Receiver not found with userId: " + messageDto.getReceiverId());
         }
 
-        // Retrieve the product by its productId
         Product product = productRepository.findById(messageDto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Create a new message
         Message message = new Message();
         message.setSender(user);
         message.setReceiver(receiver);
@@ -65,14 +62,11 @@ public class MessageService {
         message.setTimestamp(new Date());
         message.setProduct(product);
 
-        // Save the message to the database
         Message savedMessage = messageRepository.save(message);
 
-        // Map the saved message to a response
         return mapToResponse(savedMessage);
     }
 
-    // Get chat history for a given product and sender
     public List<MessageResponse> getChatHistoryForBuyer(Long productId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
@@ -89,25 +83,35 @@ public class MessageService {
         if (user == null) {
             throw new RuntimeException("User not found with email: " + userEmail);
         }
-        // Retrieve messages sent by this user for the specified product
-        List<Message> messages = messageRepository.findBySender_UserIdAndProduct_ProductId(user.getUserId(), productId);
+        List<Message> messages = messageRepository.findBySenderUserIdAndProductProductIdOrReceiverUserIdAndProductProductId(user.getUserId(), productId, user.getUserId());
 
-        // Map and return the list of messages as response
         return messages.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
     public List<MessageResponse> getChatHistoryForSeller(Long productId, String senderId) {
-        List<Message> messages = messageRepository.findBySender_UserIdAndProduct_ProductId(senderId, productId);
+        List<Message> messages = messageRepository.findBySenderUserIdAndProductProductIdOrReceiverUserIdAndProductProductId(senderId, productId, senderId);
 
-        // Map and return the list of messages as response
         return messages.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
-    // Get the list of senders who have sent messages for a specific product
     public List<MessageResponse> getSendersForProduct(Long productId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+
+        if (authentication != null && authentication.getPrincipal() != null) {
+            userEmail = (String) authentication.getPrincipal();
+        }
+
+        if (userEmail == null) {
+            throw new RuntimeException("No authenticated user found.");
+        }
+
+        User user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + userEmail);
+        }
         List<Message> messages = messageRepository.findByProduct_ProductId(productId);
 
-        // Map messages to responses and remove duplicate senders
         return messages.stream()
                 .map(message -> {
                     MessageResponse response = mapToResponse(message);
@@ -122,7 +126,6 @@ public class MessageService {
                         map -> new ArrayList<>(map.values())));
     }
 
-    // Helper method to map a Message entity to a MessageResponse DTO
     private MessageResponse mapToResponse(Message message) {
         return new MessageResponse(
                 message.getId(),

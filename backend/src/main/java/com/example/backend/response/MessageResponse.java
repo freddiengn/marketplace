@@ -12,11 +12,11 @@ import java.util.Date;
 public class MessageResponse {
     private Long id;
     private String senderId;
-    private String senderName; // Add senderName field
+    private String senderName; 
     private String receiverId;
-    private String receiverName; // Add receiverName field
+    private String receiverName; 
     private String message;
     private Date timestamp;
-    private Long productId; // Add productId field
-    private String productTitle; // Add productTitle field
+    private Long productId;
+    private String productTitle; 
 }
