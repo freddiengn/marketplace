@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Note: this is from 'jwt-decode'
+import { jwtDecode } from "jwt-decode";
 import { Alert, Card, Typography, Spin } from "antd";
 import { checkEmailExists } from "../services/AuthService";
 
@@ -19,13 +19,6 @@ const GoogleSignupPage = () => {
       const decoded = jwtDecode(credential);
       const email = decoded.email;
 
-    
-    if (!email.endsWith("@temple.edu")) {
-      setError("Only @temple.edu email addresses can register.");
-      return;
-    }
-
-      // Check if the email already exists in the database
       const emailExists = await checkEmailExists(email);
 
       if (emailExists) {
@@ -33,7 +26,6 @@ const GoogleSignupPage = () => {
           `The email "${email}" is already registered. Please log in or use a different email.`
         );
       } else {
-        // Redirect to the username setup page
         navigate("/signup/username", { state: { email, credential } });
       }
     } catch (err) {

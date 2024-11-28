@@ -27,7 +27,6 @@ const ProductDetailsPage = () => {
   const [selectedBuyer, setSelectedBuyer] = useState(null);
   const [showBuyerList, setShowBuyerList] = useState(false);
 
-  // Fetch product and buyer details
   useEffect(() => {
     const fetchProductData = async () => {
       try {
@@ -45,7 +44,6 @@ const ProductDetailsPage = () => {
     fetchProductData();
   }, [productid]);
 
-  // Fetch chat history based on user role (buyer/seller)
   useEffect(() => {
     if (userInfo && product) {
       const fetchChatHistory = async () => {
@@ -63,16 +61,15 @@ const ProductDetailsPage = () => {
     }
   }, [userInfo, product]);
 
-  // Format price in Vietnamese currency
   const formatCurrency = (value) =>
-    new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY" }).format(value);
+    new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value);
 
-  // Handle sending message to the seller
   const handleSendMessage = async () => {
+ 
     if (message.trim()) {
       try {
         const data = await sendMessage({
-          receiverId: product.sellerId,
+          receiverId: userInfo.username === product.seller ? selectedBuyer: product.sellerId,
           productId: product.productId,
           message,
         });
@@ -84,7 +81,6 @@ const ProductDetailsPage = () => {
     }
   };
 
-  // Handle buyer click to view chat history for that buyer
   const handleBuyerClick = async (senderId) => {
     try {
       const history = await getChatHistoryForSeller(productid, senderId);
@@ -97,17 +93,14 @@ const ProductDetailsPage = () => {
     }
   };
 
-  // Show loading state while fetching product data
   if (loading) {
     return <div style={{ textAlign: "center", marginTop: "50px" }}><Spin size="large" /></div>;
   }
 
-  // Show error message if product loading fails
   if (error) {
     return <div style={{ textAlign: "center", marginTop: "50px" }}><Typography.Text type="danger">{error}</Typography.Text></div>;
   }
 
-  // Show if no product is found
   if (!product) {
     return <div style={{ textAlign: "center", marginTop: "50px" }}><Typography.Text>No product found.</Typography.Text></div>;
   }
@@ -155,7 +148,10 @@ const ProductDetailsPage = () => {
         <div style={{ position: "fixed", bottom: "20px", right: "20px", maxHeight: "400px", overflowY: "auto", backgroundColor: "#ffffff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", padding: "10px", width: "250px", zIndex: 1000 }}>
           <h4>Buyers List</h4>
           {buyers.length > 0 ? (
-            buyers.filter((buyer, index, self) => index === self.findIndex((b) => b.senderName === buyer.senderName))
+            buyers.filter(
+              (buyer, index, self) =>
+                index === self.findIndex((b) => b.senderName === buyer.senderName) && buyer.senderName !== userInfo.username
+            )
               .map((buyer) => (
                 <div key={buyer.senderId} onClick={() => handleBuyerClick(buyer.senderId)} style={{ cursor: "pointer", padding: "5px", marginBottom: "10px", backgroundColor: "#f0f0f0", borderRadius: "5px" }}>
                   <Text>{buyer.senderName}</Text>

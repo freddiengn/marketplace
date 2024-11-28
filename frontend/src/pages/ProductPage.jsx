@@ -10,8 +10,6 @@ const ProductPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
-
-  // Fetch products from API
   const fetchProducts = async () => {
     try {
       const productList = await ProductService.getProductsByCurrentUser();
@@ -25,7 +23,6 @@ const ProductPage = () => {
     fetchProducts();
   }, []);
 
-  // Handle product creation or update
   const handleFormSubmit = async (values) => {
     const formData = new FormData();
     formData.append("title", values.title);
@@ -34,7 +31,6 @@ const ProductPage = () => {
     formData.append("details", values.details);
     formData.append("condition", values.condition);
 
-    // If editing, skip appending the image if not changed
     if (!isEditing || values.image?.fileList.length > 0) {
       const file = values.image?.fileList[0]?.originFileObj;
       if (file) {
@@ -59,20 +55,17 @@ const ProductPage = () => {
     }
   };
 
-  // Show modal for creating new product
   const showCreateProductModal = () => {
     setIsModalVisible(true);
     setIsEditing(false);
   };
 
-  // Show modal for editing existing product
   const showEditProductModal = (product) => {
     setIsModalVisible(true);
     setIsEditing(true);
     setCurrentProduct(product);
   };
 
-  // Confirm and delete product
   const confirmDeleteProduct = (productId) => {
     Modal.confirm({
       title: "Are you sure you want to delete this product?",
@@ -84,7 +77,7 @@ const ProductPage = () => {
         try {
           await ProductService.deleteProduct(productId);
           message.success("Product deleted successfully!");
-          fetchProducts(); // Refresh the product list after deletion
+          fetchProducts(); 
         } catch (error) {
           message.error("Failed to delete product.");
         }
@@ -109,7 +102,7 @@ const ProductPage = () => {
       <ProductTable
         products={products}
         showEditProductModal={showEditProductModal}
-        handleDeleteProduct={confirmDeleteProduct} // Use the confirmation method
+        handleDeleteProduct={confirmDeleteProduct} 
       />
 
       <ProductModal

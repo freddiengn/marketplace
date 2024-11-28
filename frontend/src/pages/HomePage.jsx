@@ -53,11 +53,10 @@ const Home = () => {
       product.price <= priceRange[1]
   );
 
-  // Format the price as Vietnamese currency
   const formatCurrency = (value) => {
-    return new Intl.NumberFormat("ja-JP", {
+    return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "JPY",
+      currency: "VND",
     }).format(value);
   };
 
@@ -131,8 +130,8 @@ const Home = () => {
               display: "block",
               textAlign: "center",
               fontSize: "16px",
-              color: "#999", // Light gray color for the message
-              fontWeight: "bold", // Bold text for emphasis
+              color: "#999", 
+              fontWeight: "bold", 
               marginTop: "20px",
               marginBottom: "20px",
             }}
