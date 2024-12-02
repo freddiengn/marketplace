@@ -105,7 +105,7 @@ const ProductDetailsPage = () => {
     return <div style={{ textAlign: "center", marginTop: "50px" }}><Typography.Text>No product found.</Typography.Text></div>;
   }
 
-  const { title, imageUrl, description, price, seller, condition, category, isSold, createdAt, updatedAt } = product;
+  const { title, imageUrl, details, price, seller, condition, category, isSold, createdAt, updatedAt } = product;
   const isSeller = userInfo && userInfo.username === seller;
 
   return (
@@ -119,13 +119,16 @@ const ProductDetailsPage = () => {
           <Col lg={12} xs={24}>
             <Card title={<Title level={2}>{title}</Title>} style={{ borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
               <Typography.Text strong style={{ fontSize: "18px", color: "#1890ff" }}>Price: {formatCurrency(price)}</Typography.Text>
-              <Paragraph>{description}</Paragraph>
+
               <Typography.Text>Condition: {condition}</Typography.Text><br />
               <Typography.Text>Category: {category}</Typography.Text><br />
               <Typography.Text>{isSold ? <span style={{ color: "red", fontWeight: "bold" }}>Status: Sold</span> : <span style={{ color: "green", fontWeight: "bold" }}>Status: Available</span>}</Typography.Text><br />
               <Typography.Text>Created At: {new Date(createdAt).toLocaleDateString()}</Typography.Text><br />
               <Typography.Text>Updated At: {new Date(updatedAt).toLocaleDateString()}</Typography.Text><br />
               <Typography.Text>Seller: {seller}</Typography.Text><br />
+              <Paragraph>
+                <span dangerouslySetInnerHTML={{ __html: details }} />
+              </Paragraph>
               <Space style={{ marginTop: "20px" }}>
                 {isSold || isSeller ? (
                   <Button type="primary" icon={<ShoppingCartOutlined />} size="large" style={{ width: "150px", backgroundColor: "#f5222d", color: "#fff", borderColor: "#f5222d" }} disabled>Buy</Button>

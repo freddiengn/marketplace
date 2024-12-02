@@ -28,10 +28,8 @@ const Footer = () => {
             About Us
           </Title>
           <Text style={{ color: "#fff" }}>
-            Welcome to Owl Swap, your trusted platform for connecting,
-            exchanging, and learning. Our mission is to create a
-            community-driven space where users can collaborate and share
-            seamlessly.
+          Welcome to OwlSwap, the trusted marketplace for Temple University students. 
+
           </Text>
         </Col>
 
@@ -73,9 +71,9 @@ const Footer = () => {
             <MailOutlined /> support@owlswap.com
           </p>
           <p>
-            <PhoneOutlined /> +1 (800) 555-1234
+            <PhoneOutlined /> (+81) 70-8976-8822
           </p>
-          <p>123 Owl Street, San Francisco, CA</p>
+          <p>1 Chome-14-29 Taishido, Setagaya City, Tokyo 154-0004</p>
         </Col>
 
         {/* Newsletter Subscription */}

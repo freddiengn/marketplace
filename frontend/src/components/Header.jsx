@@ -62,8 +62,8 @@ const Header = () => {
           alt="Logo"
           style={{ height: "40px", marginRight: "10px" }}
         />
-        <strong style={{ fontSize: "20px", fontStyle: "italic" }}>
-          Owl Swap
+        <strong style={{ fontSize: "20px" }}>
+          owlswap
         </strong>
       </Link>
 
